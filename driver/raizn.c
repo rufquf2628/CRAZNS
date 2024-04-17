@@ -52,6 +52,7 @@ static inline raizn_op_t raizn_op(struct bio *bio)
 			return RAIZN_OP_ZONE_RESET_LOG;
 		case REQ_OP_ZONE_RESET_ALL:
 			return RAIZN_OP_ZONE_RESET_ALL;
+		default:
 		}
 	}
 	return RAIZN_OP_OTHER;
@@ -81,6 +82,7 @@ static void raizn_record_op(struct raizn_stripe_head *sh)
 		case REQ_OP_FLUSH:
 			atomic_inc(&ctx->counters.flushes);
 			break;
+		default:
 		}
 		if (sh->orig_bio->bi_opf & REQ_FUA) {
 			atomic_inc(&ctx->counters.fua);
@@ -646,7 +648,10 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		ret = -ENOMEM;
 		goto err;
 	}
-	ctx->params->array_width = argc - NUM_TABLE_PARAMS;
+	// [Hangyul]
+	//ctx->params->array_width = argc - NUM_TABLE_PARAMS;
+	ctx->params->array_width = (argc - NUM_TABLE_PARAMS) / 2;
+	ctx->params->buf_width = ctx->params->array_width;
 	ctx->params->stripe_width = ctx->params->array_width - NUM_PARITY_DEV;
 	// parse arguments
 	ret = kstrtoull(argv[0], 0, &ctx->params->su_sectors);
@@ -705,6 +710,18 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			goto err;
 		}
 	}
+
+	// [Hangyul]
+	// Lookup buffer devs
+	ctx->buf_devs = kcalloc(ctx->params->buf_width, sizeof(struct raizn_buf_dev), GFP_NOIO);
+	if (!ctx->buf_devs) {
+		ti->error = "dm-raizn: Failed to allocate buffer devices in context";
+		ret = -ENOMEM;
+		goto err;
+	}
+	
+
+
 	if (raizn_init_devs(ctx) != 0) {
 		goto err;
 	}

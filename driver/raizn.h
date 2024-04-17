@@ -72,6 +72,8 @@ struct raizn_params {
 	   Keep this separate from su_sectors so we can configure encoding*/
 	sector_t stripe_sectors;
 	int lzone_shift, su_shift;
+	/* [Hangyul] Number of buffer drives */
+	int buf_width;
 };
 
 // Per-device superblock
@@ -142,6 +144,12 @@ struct raizn_dev {
 	struct raizn_superblock sb;
 };
 
+/* [Hangyul]
+ * Store metadata and partial parity for RAIZN
+ */
+struct raizn_buf_dev {
+	struct dm_dev *dev;
+};
 
 struct __attribute__((__packed__)) raizn_md_header {
 	struct __attribute__((__packed__)) raizn_md_header_header {
@@ -177,6 +185,8 @@ struct raizn_zone_mgr {
 struct raizn_ctx {
 	// device list
 	struct raizn_dev *devs;
+	// [Hangyul] buffer device list
+	struct raizn_buf_dev *buf_devs;
 	DECLARE_BITMAP(dev_status, RAIZN_MAX_DEVS);
 	struct raizn_params *params;
 	struct raizn_zone_mgr zone_mgr;
