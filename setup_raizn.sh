@@ -3,11 +3,13 @@ make
 modprobe raid456
 insmod raizn.ko
 
-backing=/dev/sda
-
 dev1=/dev/nvme1n2
 dev2=/dev/nvme2n2
 dev3=/dev/nvme3n2
+
+bufdev1=/dev/nvme1n1
+bufdev2=/dev/nvme2n1
+bufdev3=/dev/nvme3n1
 
 nvme zns reset-zone $dev1 -a
 nvme zns reset-zone $dev2 -a
@@ -23,10 +25,10 @@ volume=raizn-vol
 #num_zone=`cat /sys/block/nvme1n2/queue/nr_zones`
 #sz=$(($chunk_sec * num_zone))
 
-base16=`blkzone capacity $dev1`
-sz=`printf "%d\n" $base16`
+#base16=`blkzone capacity $dev1`
+#sz=`printf "%d\n" $base16`
 
-#sz=`blockdev --getsize $backing`
+sz=`blockdev --getsize $dev1`
 
 # Min dev = 3 (Parity 1, Data 2)
 # Num of sectors in stripe in KiB, at least 4 
@@ -39,14 +41,11 @@ gc_num=2
 #zone_cap=1102848
 zone_cap=0
 # Devices list, Parity 1 & Data 2
-devs="$dev1 $dev2 $dev3"
+devs="$dev1 $dev2 $dev3 $bufdev1 $bufdev2 $bufdev3"
 
 echo creating RAIZN volume ..
 
 #dmsetup create $volume "raizn $sec_num $io_num $gc_num $zone_cap $devs"
 dmsetup create $volume --table "0 $sz raizn $sec_num $io_num $gc_num $zone_cap $devs"
 
-if test $? -ne 0; then
-	echo initialization failed.
-else
-	echo RAIZN volume has been created.
+echo RAIZN volume has been created.

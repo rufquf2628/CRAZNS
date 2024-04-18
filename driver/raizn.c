@@ -505,6 +505,9 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 			return ret;
 		}
 		kfifo_reset(&dev->free_zone_fifo);
+
+		// Prepare for Metadata allocation
+		// Need to change
 		for (zoneno = dev->num_zones - 1;
 		     zoneno >= dev->num_zones - RAIZN_RESERVED_ZONES;
 		     --zoneno) {
@@ -719,8 +722,15 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		ret = -ENOMEM;
 		goto err;
 	}
-	
-
+	for (int buf_idx = 0; buf_idx < ctx->params->buf_width; buf_idx++) {
+		ret = dm_get_device(ti, argv[NUM_TABLE_PARAMS + ctx->params->array_width + buf_idx],
+				dm_table_get_mode(ti->table),
+				&ctx->buf_devs[buf_idx].dev);
+		if (ret) {
+			ti->error = "dm-raizn: Buffer device lookup failed";
+			goto err;
+		}
+	}
 
 	if (raizn_init_devs(ctx) != 0) {
 		goto err;
@@ -737,7 +747,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 				   ctx->num_io_workers + ctx->num_gc_workers);
 	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
-		// [Hangyul]
+		// [Hangyul] Kernel porting
 		struct bio *bio = bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &dev->bioset);
 		struct raizn_zone *mdzone;
 		bio_set_op_attrs(bio, REQ_OP_WRITE, REQ_FUA);
@@ -748,6 +758,8 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			ret = -1;
 			goto err;
 		}
+		// Allocate Metadata to last zone
+		// Need to change later
 		mdzone = dev->md_zone[RAIZN_ZONE_MD_GENERAL];
 		mdzone->wp += sizeof(dev->sb);
 		bio->bi_iter.bi_sector = mdzone->start;
