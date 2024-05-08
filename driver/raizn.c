@@ -652,10 +652,11 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto err;
 	}
 	// [Hangyul]
-	//ctx->params->array_width = argc - NUM_TABLE_PARAMS;
-	ctx->params->array_width = (argc - NUM_TABLE_PARAMS) / 2;
+	ctx->params->array_width = argc - NUM_TABLE_PARAMS;
+	//ctx->params->array_width = (argc - NUM_TABLE_PARAMS) / 2;
 	ctx->params->buf_width = ctx->params->array_width;
-	ctx->params->stripe_width = ctx->params->array_width - NUM_PARITY_DEV;
+	ctx->params->stripe_width = ctx->params->array_width;
+	//ctx->params->stripe_width = ctx->params->array_width - NUM_PARITY_DEV;
 	// parse arguments
 	ret = kstrtoull(argv[0], 0, &ctx->params->su_sectors);
 	ctx->params->su_sectors *= 1024; // Convert from KiB to bytes
@@ -716,6 +717,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 
 	// [Hangyul]
 	// Lookup buffer devs
+	/*
 	ctx->buf_devs = kcalloc(ctx->params->buf_width, sizeof(struct raizn_buf_dev), GFP_NOIO);
 	if (!ctx->buf_devs) {
 		ti->error = "dm-raizn: Failed to allocate buffer devices in context";
@@ -731,7 +733,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			goto err;
 		}
 	}
-
+	*/
 	if (raizn_init_devs(ctx) != 0) {
 		goto err;
 	}

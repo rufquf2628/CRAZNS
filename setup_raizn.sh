@@ -7,9 +7,9 @@ dev1=/dev/nvme1n2
 dev2=/dev/nvme2n2
 dev3=/dev/nvme3n2
 
-bufdev1=/dev/nvme1n1
-bufdev2=/dev/nvme2n1
-bufdev3=/dev/nvme3n1
+#bufdev1=/dev/nvme1n1
+#bufdev2=/dev/nvme2n1
+#bufdev3=/dev/nvme3n1
 
 nvme zns reset-zone $dev1 -a
 nvme zns reset-zone $dev2 -a
@@ -41,7 +41,8 @@ gc_num=2
 #zone_cap=1102848
 zone_cap=0
 # Devices list, Parity 1 & Data 2
-devs="$dev1 $dev2 $dev3 $bufdev1 $bufdev2 $bufdev3"
+#devs="$dev1 $dev2 $dev3 $bufdev1 $bufdev2 $bufdev3"
+devs="$dev1 $dev2 $dev3"
 
 echo creating RAIZN volume ..
 
