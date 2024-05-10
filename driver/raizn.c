@@ -485,6 +485,10 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
 		// [Hangyul]
 		dev->num_zones = bdev_nr_zones(dev->dev->bdev);
+
+		// DEBUG
+		//pr_err("num_zones = %d\n", dev->num_zones);
+
 		dev->zones = kcalloc(dev->num_zones, sizeof(struct raizn_zone),
 				     GFP_NOIO);
 		if (!dev->zones) {
@@ -576,6 +580,8 @@ static int raizn_init_volume(struct raizn_ctx *ctx)
 	}
 	ctx->params->lzone_shift = ilog2(ctx->params->lzone_size_sectors);
 	// TODO: change for configurable zone size
+
+	// [Hangyul] CHANGE LATER
 	ctx->params->num_zones -= RAIZN_RESERVED_ZONES;
 	return 0;
 }
@@ -652,11 +658,11 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto err;
 	}
 	// [Hangyul]
-	ctx->params->array_width = argc - NUM_TABLE_PARAMS;
-	//ctx->params->array_width = (argc - NUM_TABLE_PARAMS) / 2;
+	//ctx->params->array_width = argc - NUM_TABLE_PARAMS;
+	ctx->params->array_width = (argc - NUM_TABLE_PARAMS) / 2;
 	ctx->params->buf_width = ctx->params->array_width;
-	ctx->params->stripe_width = ctx->params->array_width;
-	//ctx->params->stripe_width = ctx->params->array_width - NUM_PARITY_DEV;
+	//ctx->params->stripe_width = ctx->params->array_width;
+	ctx->params->stripe_width = ctx->params->array_width - NUM_PARITY_DEV;
 	// parse arguments
 	ret = kstrtoull(argv[0], 0, &ctx->params->su_sectors);
 	ctx->params->su_sectors *= 1024; // Convert from KiB to bytes
@@ -717,7 +723,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 
 	// [Hangyul]
 	// Lookup buffer devs
-	/*
+	
 	ctx->buf_devs = kcalloc(ctx->params->buf_width, sizeof(struct raizn_buf_dev), GFP_NOIO);
 	if (!ctx->buf_devs) {
 		ti->error = "dm-raizn: Failed to allocate buffer devices in context";
@@ -733,7 +739,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			goto err;
 		}
 	}
-	*/
+	
 	if (raizn_init_devs(ctx) != 0) {
 		goto err;
 	}
@@ -2274,6 +2280,10 @@ static int raizn_report_zones(struct dm_target *ti,
 			      unsigned int nr_zones)
 {
 	struct raizn_ctx *ctx = ti->private;
+
+	// [Hangyul]
+	return dm_report_zones(ctx->devs[0].dev->bdev, 0, dm_target_offset(ti, args->next_sector), args, nr_zones);
+	/*
 	int zoneno = args->next_sector >> ctx->params->lzone_shift;
 	struct raizn_zone *zone = &ctx->zone_mgr.lzones[zoneno];
 	struct blk_zone report;
@@ -2293,6 +2303,7 @@ static int raizn_report_zones(struct dm_target *ti,
 	args->start = report.start;
 	args->next_sector += ctx->params->lzone_size_sectors;
 	return args->orig_cb(&report, args->zone_idx++, args->orig_data);
+	*/
 }
 
 // More investigation is necessary to see what this function is actually used for in f2fs etc.
