@@ -1,0 +1,12 @@
+[global]
+bs=64k
+# io_uring / psync / libaio
+ioengine=io_uring
+filename=/dev/array
+direct=1
+rw=write
+#numjobs=8
+#offset_increment=20z
+size=20z
+zonemode=zbd
+[job1]
