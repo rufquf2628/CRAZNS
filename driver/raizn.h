@@ -149,6 +149,12 @@ struct raizn_dev {
  */
 struct raizn_buf_dev {
 	struct dm_dev *dev;
+
+	struct bio_set bioset;
+	struct mutex lock, bioset_lock;
+
+	int idx;
+	struct raizn_superblock sb;
 };
 
 struct __attribute__((__packed__)) raizn_md_header {

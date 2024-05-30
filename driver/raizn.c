@@ -481,7 +481,7 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 	BUG_ON(!ctx);
 	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
-		// [Hangyul]
+		// [Hangyul] Porting
 		dev->num_zones = bdev_nr_zones(dev->dev->bdev);
 		dev->zones = kcalloc(dev->num_zones, sizeof(struct raizn_zone),
 				     GFP_NOIO);
@@ -496,18 +496,16 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		mutex_init(&dev->bioset_lock);
 		dev->zone_shift = ilog2(dev->zones[0].len);
 		dev->idx = dev_idx;
+		
 		spin_lock_init(&dev->free_wlock);
 		spin_lock_init(&dev->free_rlock);
 
-		// [Hangyul] TODO
 		if ((ret = kfifo_alloc(&dev->free_zone_fifo,
 				       RAIZN_RESERVED_ZONES, GFP_NOIO))) {
 			return ret;
 		}
 		kfifo_reset(&dev->free_zone_fifo);
 
-		// Prepare for Metadata allocation
-		// [Hangyul] TODO
 		for (zoneno = dev->num_zones - 1;
 		     zoneno >= dev->num_zones - RAIZN_RESERVED_ZONES;
 		     --zoneno) {
@@ -530,6 +528,7 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 				dev->md_zone[mdtype]->start >> dev->zone_shift,
 				dev->md_zone[mdtype]->start);
 		}
+		
 		raizn_workqueue_init(ctx, &dev->gc_ingest_workers,
 				     ctx->num_gc_workers, raizn_gc);
 		dev->gc_ingest_workers.dev = dev;
@@ -538,6 +537,17 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		dev->gc_flush_workers.dev = dev;
 		dev->sb.params = *ctx->params; // Shallow copy is fine
 		dev->sb.idx = dev->idx;
+
+		// [Hangyul] Buf dev init
+		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
+		buf_dev->idx = dev_idx;
+		mutex_init(&buf_dev->lock);
+		mutex_init(&buf_dev->bioset_lock);
+
+		ret = bioset_init(&buf_dev->bioset, RAIZN_BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
+
+		buf_dev->sb.params = *ctx->params;
+		dev->sb.idx = buf_dev->idx;
 	}
 	return ret;
 }
@@ -718,8 +728,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	}
 
 	// [Hangyul]
-	// Lookup buffer devs
-	
+	// Lookup buffer devs	
 	ctx->buf_devs = kcalloc(ctx->params->buf_width, sizeof(struct raizn_buf_dev), GFP_NOIO);
 	if (!ctx->buf_devs) {
 		ti->error = "dm-raizn: Failed to allocate buffer devices in context";
@@ -758,6 +767,8 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		struct raizn_zone *mdzone;
 		bio_set_op_attrs(bio, REQ_OP_WRITE, REQ_FUA);
 		bio_set_dev(bio, dev->dev->bdev);
+
+		// Erase later
 		if (bio_add_page(bio, virt_to_page(&dev->sb), sizeof(dev->sb),
 				 0) != sizeof(dev->sb)) {
 			ti->error = "Failed to write superblock";
@@ -774,7 +785,29 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			goto err;
 		}
 		bio_put(bio);
+
+		// [Hangyul] Allocate MD to Buf dev
+		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
+		
+		struct bio *bbio = bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &buf_dev->bioset);
+		bio_set_op_attrs(bbio, REQ_OP_WRITE, REQ_FUA);
+		bio_set_dev(bbio, buf_dev->dev->bdev);
+		
+		if (bio_add_page(bbio, virt_to_page(&buf_dev->sb), sizeof(buf_dev->sb), 0) != sizeof(buf_dev->sb)) {
+			ti->error = "Failed to write superblock on buf dev";
+			ret = -1;
+			goto err;
+		}
+		bbio->bi_iter.bi_sector = 0;
+		if (submit_bio_wait(bbio)) {
+			ti->error = "IO error when writing superblock to buf";
+			ret = -1;
+			goto err;
+		}
+		bio_put(bbio);
+		pr_info("sizeof sb: %lud\n buf: %lud\n", sizeof(dev->sb), sizeof(buf_dev->sb));
 	}
+
 	return 0;
 
 err:
