@@ -15,6 +15,10 @@ nvme zns reset-zone $dev1 -a
 nvme zns reset-zone $dev2 -a
 nvme zns reset-zone $dev3 -a
 
+nvme format -f $bufdev1
+nvme format -f $bufdev2
+nvme format -f $bufdev3
+
 echo mq-deadline > /sys/block/nvme1n2/queue/scheduler
 echo mq-deadline > /sys/block/nvme2n2/queue/scheduler
 echo mq-deadline > /sys/block/nvme3n2/queue/scheduler

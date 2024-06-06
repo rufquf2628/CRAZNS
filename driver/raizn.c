@@ -137,6 +137,13 @@ static struct raizn_dev *lba_to_parity_dev(struct raizn_ctx *ctx, sector_t lba)
 {
 	return &ctx->devs[lba_to_parity_dev_idx(ctx, lba)];
 }
+
+// [Hangyul]
+static struct raizn_buf_dev *_lba_to_parity_dev(struct raizn_ctx *ctx, sector_t lba)
+{
+	return &ctx->buf_devs[lba_to_parity_dev_idx(ctx, lba)];
+}
+
 // Which device holds the data chunk associated with LBA
 static struct raizn_dev *lba_to_dev(struct raizn_ctx *ctx, sector_t lba)
 {
@@ -541,13 +548,13 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		// [Hangyul] Buf dev init
 		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
 		buf_dev->idx = dev_idx;
-		mutex_init(&buf_dev->lock);
-		mutex_init(&buf_dev->bioset_lock);
+		//mutex_init(&buf_dev->lock);
+		//mutex_init(&buf_dev->bioset_lock);
 
-		ret = bioset_init(&buf_dev->bioset, RAIZN_BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
+		//ret = bioset_init(&buf_dev->bioset, RAIZN_BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
 
-		buf_dev->sb.params = *ctx->params;
-		dev->sb.idx = buf_dev->idx;
+		//buf_dev->sb.params = *ctx->params;
+		//dev->sb.idx = buf_dev->idx;
 	}
 	return ret;
 }
@@ -760,22 +767,20 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 				   ctx->num_io_workers + ctx->num_gc_workers);
 
 	// [Hangyul] TODO
+	
 	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
-		// [Hangyul]
 		struct bio *bio = bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &dev->bioset);
 		struct raizn_zone *mdzone;
 		bio_set_op_attrs(bio, REQ_OP_WRITE, REQ_FUA);
 		bio_set_dev(bio, dev->dev->bdev);
 
-		// Erase later
 		if (bio_add_page(bio, virt_to_page(&dev->sb), sizeof(dev->sb),
 				 0) != sizeof(dev->sb)) {
 			ti->error = "Failed to write superblock";
 			ret = -1;
 			goto err;
 		}
-		// Allocate Metadata to last zone
 		mdzone = dev->md_zone[RAIZN_ZONE_MD_GENERAL];
 		mdzone->wp += sizeof(dev->sb);
 		bio->bi_iter.bi_sector = mdzone->start;
@@ -785,29 +790,31 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			goto err;
 		}
 		bio_put(bio);
-
-		// [Hangyul] Allocate MD to Buf dev
+		
+	}
+	
+	/*
+	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
+		struct raizn_dev *dev = &ctx->devs[dev_idx];
 		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
 		
-		struct bio *bbio = bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &buf_dev->bioset);
-		bio_set_op_attrs(bbio, REQ_OP_WRITE, REQ_FUA);
-		bio_set_dev(bbio, buf_dev->dev->bdev);
+		struct bio *bio = bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &dev->bioset);
+		bio_set_op_attrs(bio, REQ_OP_WRITE, REQ_FUA);
+		bio_set_dev(bio, buf_dev->dev->bdev);
 		
-		if (bio_add_page(bbio, virt_to_page(&buf_dev->sb), sizeof(buf_dev->sb), 0) != sizeof(buf_dev->sb)) {
-			ti->error = "Failed to write superblock on buf dev";
+		if (bio_add_page(bio, virt_to_page(&dev->sb), sizeof(dev->sb), 0) != sizeof(dev->sb)) {
+			ti->error = "Failed to write superblock";
+			goto err;
+		}
+		bio->bi_iter.bi_sector = 0;
+		if (submit_bio_wait(bio)) {
+			ti->error = "IO error when writting superblock to buffer dev";
 			ret = -1;
 			goto err;
 		}
-		bbio->bi_iter.bi_sector = 0;
-		if (submit_bio_wait(bbio)) {
-			ti->error = "IO error when writing superblock to buf";
-			ret = -1;
-			goto err;
-		}
-		bio_put(bbio);
-		pr_info("sizeof sb: %lud\n buf: %lud\n", sizeof(dev->sb), sizeof(buf_dev->sb));
+		bio_put(bio);
 	}
-
+	*/
 	return 0;
 
 err:
@@ -1523,6 +1530,50 @@ static struct raizn_zone *raizn_md_lba(struct raizn_stripe_head *sh,
 	return mdzone;
 }
 
+// [Hangyul]
+static struct raizn_sub_io *_raizn_alloc_md(struct raizn_stripe_head *sh,
+						sector_t lzoneno,
+						struct raizn_buf_dev *buf_dev, struct bio_set *bioset,
+						raizn_zone_type mdtype, void *data,
+						size_t len)
+{
+	struct raizn_ctx *ctx = sh->ctx;
+	struct raizn_sub_io *mdio = raizn_stripe_head_alloc_bio(
+			sh, bioset, data ? 2 : 1, RAIZN_SUBIO_MD);
+	struct bio *mdbio = mdio->bio;
+	struct page *p;
+
+	mdio->header.header.zone_generation =
+		ctx->zone_mgr.gen_counts[lzoneno / RAIZN_GEN_COUNTERS_PER_PAGE]
+			.zone_generation[lzoneno % RAIZN_GEN_COUNTERS_PER_PAGE];
+	mdio->header.header.magic = RAIZN_MD_MAGIC;
+	mdio->dbg = len;
+
+	bio_set_op_attrs(mdbio, REQ_OP_WRITE, 0);
+	bio_set_dev(mdbio, buf_dev->dev->bdev);
+
+	// TODO
+	mdbio->bi_iter.bi_sector = 0;
+
+	p = is_vmalloc_addr(&mdio->header) ? vmalloc_to_page(&mdio->header) :
+							virt_to_page(&mdio->header);
+	if (bio_add_page(mdbio, p, PAGE_SIZE, offset_in_page(&mdio->header)) != PAGE_SIZE) {
+		pr_err("Failed to add md header page\n");
+		bio_endio(mdbio);
+		return NULL;
+	}
+	if (data) {
+		p = is_vmalloc_addr(data) ? vmalloc_to_page(data) :
+							virt_to_page(data);
+		if (bio_add_page(mdbio, p, len, 0) != len) {
+			pr_err("Failed to add md data page\n");
+			return NULL;
+		}
+	}
+
+	return mdio;
+}
+
 static struct raizn_sub_io *raizn_alloc_md(struct raizn_stripe_head *sh,
 					   sector_t lzoneno,
 					   struct raizn_dev *dev,
@@ -1572,6 +1623,7 @@ static struct raizn_sub_io *raizn_alloc_md(struct raizn_stripe_head *sh,
 	return mdio;
 }
 
+// [Hangyul] TODO
 // Header must not be null, but data can be null
 // Returns 0 on success, nonzero on failure
 static int raizn_write_md(struct raizn_stripe_head *sh, sector_t lzoneno,
