@@ -139,7 +139,7 @@ static struct raizn_dev *lba_to_parity_dev(struct raizn_ctx *ctx, sector_t lba)
 }
 
 // [Hangyul]
-static struct raizn_buf_dev *_lba_to_parity_dev(struct raizn_ctx *ctx, sector_t lba)
+static struct raizn_buf_dev *lba_to_parity_buf_dev(struct raizn_ctx *ctx, sector_t lba)
 {
 	return &ctx->buf_devs[lba_to_parity_dev_idx(ctx, lba)];
 }
@@ -1531,7 +1531,7 @@ static struct raizn_zone *raizn_md_lba(struct raizn_stripe_head *sh,
 }
 
 // [Hangyul]
-static struct raizn_sub_io *_raizn_alloc_md(struct raizn_stripe_head *sh,
+static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 						sector_t lzoneno,
 						struct raizn_buf_dev *buf_dev, struct bio_set *bioset,
 						raizn_zone_type mdtype, void *data,
@@ -1815,6 +1815,7 @@ static int raizn_write(struct raizn_stripe_head *sh)
 			set_bit(dev->idx, dev_bitmap);
 			// If we write the last sector of a stripe unit, add parity
 			if (stripe_id < lba_to_stripe(ctx, chunk_end_lba)) {
+				// [Hangyul[] TODO
 				dev = lba_to_parity_dev(ctx, lba);
 				bio = check_alloc_dev_bio(
 					sh, dev,
