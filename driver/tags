@@ -1,0 +1,286 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/hangyul/project/RAIZN-release-test/driver/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+DEBUG_PRINT	raizn.h	/^#define DEBUG_PRINT /;"	d
+INCLUDE_VERMAGIC	raizn.mod.c	/^#define INCLUDE_VERMAGIC$/;"	d	file:
+MIN_DEVS	raizn.h	/^#define MIN_DEVS /;"	d
+NUM_PARITY_DEV	raizn.h	/^#define NUM_PARITY_DEV	/;"	d
+NUM_TABLE_PARAMS	raizn.h	/^#define NUM_TABLE_PARAMS /;"	d
+PROFILING	raizn.h	/^#define PROFILING$/;"	d
+RAIZN_BIO_POOL_SIZE	raizn.h	/^#define RAIZN_BIO_POOL_SIZE /;"	d
+RAIZN_DEV_REBUILD_CMD	raizn.h	/^#define RAIZN_DEV_REBUILD_CMD /;"	d
+RAIZN_DEV_TOGGLE_CMD	raizn.h	/^#define RAIZN_DEV_TOGGLE_CMD /;"	d
+RAIZN_GEN_COUNTERS_PER_PAGE	raizn.h	/^#define RAIZN_GEN_COUNTERS_PER_PAGE /;"	d
+RAIZN_IO_COMPLETED	raizn.h	/^		RAIZN_IO_COMPLETED,$/;"	e	enum:raizn_stripe_head::__anon3523ddbf0603
+RAIZN_IO_CREATED	raizn.h	/^		RAIZN_IO_CREATED = 0,$/;"	e	enum:raizn_stripe_head::__anon3523ddbf0603
+RAIZN_IO_FAILED	raizn.h	/^		RAIZN_IO_FAILED$/;"	e	enum:raizn_stripe_head::__anon3523ddbf0603
+RAIZN_MAX_BVECS	raizn.h	/^#define RAIZN_MAX_BVECS /;"	d
+RAIZN_MAX_DEVS	raizn.h	/^#define RAIZN_MAX_DEVS /;"	d
+RAIZN_MAX_SUB_IOS	raizn.h	/^#define RAIZN_MAX_SUB_IOS /;"	d
+RAIZN_MAX_ZONES	raizn.h	/^#define RAIZN_MAX_ZONES /;"	d
+RAIZN_MD_MAGIC	raizn.h	/^#define RAIZN_MD_MAGIC /;"	d
+RAIZN_MD_PARITY_LOG	raizn.h	/^#define RAIZN_MD_PARITY_LOG /;"	d
+RAIZN_MD_RESET_LOG	raizn.h	/^#define RAIZN_MD_RESET_LOG /;"	d
+RAIZN_MD_SUPERBLOCK	raizn.h	/^#define RAIZN_MD_SUPERBLOCK /;"	d
+RAIZN_OP_DEGRADED_READ	raizn.h	/^	RAIZN_OP_DEGRADED_READ,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_DISCARD	raizn.h	/^	RAIZN_OP_DISCARD,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_FLUSH	raizn.h	/^	RAIZN_OP_FLUSH,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_GC	raizn.h	/^	RAIZN_OP_GC,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_OTHER	raizn.h	/^	RAIZN_OP_OTHER = 0,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_READ	raizn.h	/^	RAIZN_OP_READ, \/\/ Start 1:1 mapping with REQ_OP_*$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_REBUILD_FLUSH	raizn.h	/^	RAIZN_OP_REBUILD_FLUSH,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_REBUILD_INGEST	raizn.h	/^	RAIZN_OP_REBUILD_INGEST,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_SECURE_ERASE	raizn.h	/^	RAIZN_OP_SECURE_ERASE,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_WRITE	raizn.h	/^	RAIZN_OP_WRITE,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_WRITE_ZEROES	raizn.h	/^	RAIZN_OP_WRITE_ZEROES,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_ZONE_APPEND	raizn.h	/^	RAIZN_OP_ZONE_APPEND,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_ZONE_CLOSE	raizn.h	/^	RAIZN_OP_ZONE_CLOSE,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_ZONE_FINISH	raizn.h	/^	RAIZN_OP_ZONE_FINISH,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_ZONE_OPEN	raizn.h	/^	RAIZN_OP_ZONE_OPEN,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_ZONE_RESET	raizn.h	/^	RAIZN_OP_ZONE_RESET,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_ZONE_RESET_ALL	raizn.h	/^	RAIZN_OP_ZONE_RESET_ALL$/;"	e	enum:__anon3523ddbf0403
+RAIZN_OP_ZONE_RESET_LOG	raizn.h	/^	RAIZN_OP_ZONE_RESET_LOG,$/;"	e	enum:__anon3523ddbf0403
+RAIZN_RESERVED_ZONES	raizn.h	/^#define RAIZN_RESERVED_ZONES /;"	d
+RAIZN_SUBIO_DATA	raizn.h	/^	RAIZN_SUBIO_DATA = 0,$/;"	e	enum:__anon3523ddbf0503
+RAIZN_SUBIO_MD	raizn.h	/^	RAIZN_SUBIO_MD,$/;"	e	enum:__anon3523ddbf0503
+RAIZN_SUBIO_OTHER	raizn.h	/^	RAIZN_SUBIO_OTHER$/;"	e	enum:__anon3523ddbf0503
+RAIZN_SUBIO_PARITY	raizn.h	/^	RAIZN_SUBIO_PARITY,$/;"	e	enum:__anon3523ddbf0503
+RAIZN_SUBIO_REBUILD	raizn.h	/^	RAIZN_SUBIO_REBUILD,$/;"	e	enum:__anon3523ddbf0503
+RAIZN_TEST	raizn.h	/^#define RAIZN_TEST$/;"	d
+RAIZN_WQ_MAX_DEPTH	raizn.h	/^#define RAIZN_WQ_MAX_DEPTH /;"	d
+RAIZN_ZONE_DATA	raizn.h	/^	RAIZN_ZONE_DATA,$/;"	e	enum:raizn_zone_type
+RAIZN_ZONE_MD_GENERAL	raizn.h	/^	RAIZN_ZONE_MD_GENERAL = 0,$/;"	e	enum:raizn_zone_type
+RAIZN_ZONE_MD_PARITY_LOG	raizn.h	/^	RAIZN_ZONE_MD_PARITY_LOG,$/;"	e	enum:raizn_zone_type
+RAIZN_ZONE_NUM_MD_TYPES	raizn.h	/^	RAIZN_ZONE_NUM_MD_TYPES,$/;"	e	enum:raizn_zone_type
+RAIZN_ZONE_NUM_TYPES	raizn.h	/^	RAIZN_ZONE_NUM_TYPES$/;"	e	enum:raizn_zone_type
+SCACHE_NAME	raizn.h	/^#define SCACHE_NAME /;"	d
+STRIPE_BUFFERS_MASK	raizn.h	/^#define STRIPE_BUFFERS_MASK /;"	d
+STRIPE_BUFFERS_PER_ZONE	raizn.h	/^#define STRIPE_BUFFERS_PER_ZONE /;"	d
+WQ_NAME	raizn.h	/^#define WQ_NAME /;"	d
+__RAIZN_H__	raizn.h	/^#define __RAIZN_H__$/;"	d
+____versions	raizn.mod.c	/^static const struct modversion_info ____versions[]$/;"	v	typeref:typename:const struct modversion_info[]__used __section ("__versions")	file:
+__anon3523ddbf010a	raizn.h	/^	union {$/;"	u	struct:raizn_zone
+__anon3523ddbf0208	raizn.h	/^	struct __attribute__((__packed__)) {$/;"	s	struct:raizn_zone_mgr
+__anon3523ddbf0308	raizn.h	/^	struct {$/;"	s	struct:raizn_ctx
+__anon3523ddbf0403	raizn.h	/^typedef enum {$/;"	g
+__anon3523ddbf0503	raizn.h	/^typedef enum {$/;"	g
+__anon3523ddbf0603	raizn.h	/^	enum {$/;"	g	struct:raizn_stripe_head
+all	Makefile	/^all:$/;"	t
+array_width	raizn.h	/^	int array_width;$/;"	m	struct:raizn_params	typeref:typename:int
+bio	raizn.h	/^	struct bio *bio;$/;"	m	struct:raizn_sub_io	typeref:struct:bio *
+bios	raizn.h	/^	struct bio *bios[RAIZN_MAX_DEVS];$/;"	m	struct:raizn_stripe_head	typeref:struct:bio * []
+bioset	raizn.h	/^	struct bio_set bioset; \/\/ For cloning\/splitting bios that are never submitted$/;"	m	struct:raizn_ctx	typeref:struct:bio_set
+bioset	raizn.h	/^	struct bio_set bioset; \/\/ for allocating RAIZN-specific bios for this device$/;"	m	struct:raizn_dev	typeref:struct:bio_set
+bioset_lock	raizn.h	/^	struct mutex lock, bioset_lock;$/;"	m	struct:raizn_dev	typeref:struct:mutex
+buf_width	raizn.h	/^	int buf_width;$/;"	m	struct:raizn_params	typeref:typename:int
+buffer_stripe_data	raizn.c	/^static int buffer_stripe_data(struct raizn_stripe_head *sh, sector_t start,$/;"	f	typeref:typename:int	file:
+bytes_to_stripe_offset	raizn.c	/^static inline sector_t bytes_to_stripe_offset(struct raizn_ctx *ctx,$/;"	f	typeref:typename:sector_t	file:
+capacity	raizn.h	/^	sector_t capacity;$/;"	m	struct:raizn_zone	typeref:typename:sector_t
+ccflags-y	Makefile	/^ccflags-y := -std=gnu99 -Wimplicit-fallthrough=0$/;"	m
+check_alloc_dev_bio	raizn.c	/^static struct bio *check_alloc_dev_bio(struct raizn_stripe_head *sh,$/;"	f	typeref:struct:bio *	file:
+clean	Makefile	/^clean:$/;"	t
+cleanup_raizn	raizn.c	/^static void cleanup_raizn(void)$/;"	f	typeref:typename:void	file:
+cond	raizn.h	/^	atomic_t cond;$/;"	m	struct:raizn_zone	typeref:typename:atomic_t
+counters	raizn.h	/^	} counters;$/;"	m	struct:raizn_ctx	typeref:struct:raizn_ctx::__anon3523ddbf0308
+ctx	raizn.h	/^	struct raizn_ctx *ctx;$/;"	m	struct:raizn_stripe_head	typeref:struct:raizn_ctx *
+ctx	raizn.h	/^	struct raizn_ctx *ctx;$/;"	m	struct:raizn_workqueue	typeref:struct:raizn_ctx *
+data	raizn.h	/^	char *data;$/;"	m	struct:raizn_stripe_buffer	typeref:typename:char *
+data	raizn.h	/^	char data[PAGE_SIZE - sizeof(struct raizn_md_header_header)];$/;"	m	struct:raizn_md_header	typeref:typename:char[]
+data	raizn.h	/^	void *data;$/;"	m	struct:raizn_sub_io	typeref:typename:void *
+dbg	raizn.h	/^	sector_t dbg;$/;"	m	struct:raizn_sub_io	typeref:typename:sector_t
+deallocate_target	raizn.c	/^static void deallocate_target(struct dm_target *ti)$/;"	f	typeref:typename:void	file:
+defer_put	raizn.h	/^	bool defer_put;$/;"	m	struct:raizn_sub_io	typeref:typename:bool
+dev	raizn.h	/^		struct raizn_dev *dev;$/;"	m	union:raizn_zone::__anon3523ddbf010a	typeref:struct:raizn_dev *
+dev	raizn.h	/^	struct dm_dev *dev;$/;"	m	struct:raizn_dev	typeref:struct:dm_dev *
+dev	raizn.h	/^	struct raizn_dev *dev;$/;"	m	struct:raizn_workqueue	typeref:struct:raizn_dev *
+devs	raizn.h	/^	struct raizn_dev *devs;$/;"	m	struct:raizn_ctx	typeref:struct:raizn_dev *
+end	raizn.h	/^		sector_t start, end;$/;"	m	struct:raizn_md_header::raizn_md_header_header	typeref:typename:sector_t
+end	raizn.h	/^	ktime_t start, end;$/;"	m	struct:raizn_rebuild_mgr	typeref:typename:ktime_t
+flushes	raizn.h	/^		atomic_t writes, reads, zone_resets, flushes;$/;"	m	struct:raizn_ctx::__anon3523ddbf0308	typeref:typename:atomic_t
+free_rlock	raizn.h	/^	spinlock_t free_rlock, free_wlock;$/;"	m	struct:raizn_dev	typeref:typename:spinlock_t
+free_wlock	raizn.h	/^	spinlock_t free_rlock, free_wlock;$/;"	m	struct:raizn_dev	typeref:typename:spinlock_t
+fua	raizn.h	/^		atomic_t preflush, fua;$/;"	m	struct:raizn_ctx::__anon3523ddbf0308	typeref:typename:atomic_t
+gc_count	raizn.h	/^		atomic_t gc_count;$/;"	m	struct:raizn_ctx::__anon3523ddbf0308	typeref:typename:atomic_t
+gc_flush_workers	raizn.h	/^	struct raizn_workqueue gc_flush_workers;$/;"	m	struct:raizn_dev	typeref:struct:raizn_workqueue
+gc_ingest_workers	raizn.h	/^	struct raizn_workqueue gc_ingest_workers;$/;"	m	struct:raizn_dev	typeref:struct:raizn_workqueue
+gen_counts	raizn.h	/^	} *gen_counts;$/;"	m	struct:raizn_zone_mgr	typeref:struct:raizn_zone_mgr::__anon3523ddbf0208 *
+get_bio_dev	raizn.c	/^static inline struct raizn_dev *get_bio_dev(struct raizn_ctx *ctx,$/;"	f	typeref:struct:raizn_dev *	file:
+global_generation	raizn.h	/^		uint64_t global_generation;$/;"	m	struct:raizn_zone_mgr::__anon3523ddbf0208	typeref:typename:uint64_t
+header	raizn.h	/^	struct raizn_md_header header;$/;"	m	struct:raizn_sub_io	typeref:struct:raizn_md_header
+header	raizn.h	/^	} header;$/;"	m	struct:raizn_md_header	typeref:struct:raizn_md_header::raizn_md_header_header
+idx	raizn.h	/^	int idx; \/\/ index of this disk in the array$/;"	m	struct:raizn_superblock	typeref:typename:int
+idx	raizn.h	/^	int idx;$/;"	m	struct:raizn_dev	typeref:typename:int
+incomplete_zones	raizn.h	/^	unsigned long *incomplete_zones; \/\/ Bitmap of non-open zones that haven't been rebuilt yet$/;"	m	struct:raizn_rebuild_mgr	typeref:typename:unsigned long *
+init_pzone_descriptor	raizn.c	/^int init_pzone_descriptor(struct blk_zone *zone, unsigned int idx, void *data)$/;"	f	typeref:typename:int
+init_raizn	raizn.c	/^static int init_raizn(void)$/;"	f	typeref:typename:int	file:
+io_workers	raizn.h	/^	struct raizn_workqueue io_workers;$/;"	m	struct:raizn_ctx	typeref:struct:raizn_workqueue
+lba	raizn.h	/^	sector_t lba; \/\/ TODO refactor this into zone ptr$/;"	m	struct:raizn_stripe_head	typeref:typename:sector_t
+lba	raizn.h	/^	sector_t lba;$/;"	m	struct:raizn_stripe_buffer	typeref:typename:sector_t
+lba_to_dev	raizn.c	/^static struct raizn_dev *lba_to_dev(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:struct:raizn_dev *	file:
+lba_to_lzone	raizn.c	/^static inline sector_t lba_to_lzone(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:typename:sector_t	file:
+lba_to_lzone_offset	raizn.c	/^static inline sector_t lba_to_lzone_offset(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:typename:sector_t	file:
+lba_to_parity_dev	raizn.c	/^static struct raizn_dev *lba_to_parity_dev(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:struct:raizn_dev *	file:
+lba_to_parity_dev_idx	raizn.c	/^static int lba_to_parity_dev_idx(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:typename:int	file:
+lba_to_pba_default	raizn.c	/^static inline sector_t lba_to_pba_default(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:typename:sector_t	file:
+lba_to_stripe	raizn.c	/^static inline sector_t lba_to_stripe(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:typename:sector_t	file:
+lba_to_stripe_addr	raizn.c	/^static inline sector_t lba_to_stripe_addr(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:typename:sector_t	file:
+lba_to_stripe_offset	raizn.c	/^static inline sector_t lba_to_stripe_offset(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:typename:sector_t	file:
+lba_to_su	raizn.c	/^static inline sector_t lba_to_su(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:typename:sector_t	file:
+lba_to_su_offset	raizn.c	/^static inline sector_t lba_to_su_offset(struct raizn_ctx *ctx, sector_t lba)$/;"	f	typeref:typename:sector_t	file:
+len	raizn.h	/^	sector_t len;$/;"	m	struct:raizn_zone	typeref:typename:sector_t
+lock	raizn.h	/^	struct mutex lock, bioset_lock;$/;"	m	struct:raizn_dev	typeref:struct:mutex
+lock	raizn.h	/^	struct mutex lock;$/;"	m	struct:raizn_rebuild_mgr	typeref:struct:mutex
+lock	raizn.h	/^	struct mutex lock;$/;"	m	struct:raizn_stripe_buffer	typeref:struct:mutex
+lock	raizn.h	/^	struct mutex lock;$/;"	m	struct:raizn_zone	typeref:struct:mutex
+logtype	raizn.h	/^		uint32_t magic, logtype;$/;"	m	struct:raizn_md_header::raizn_md_header_header	typeref:typename:uint32_t
+lzone_capacity_sectors	raizn.h	/^	sector_t lzone_capacity_sectors;$/;"	m	struct:raizn_params	typeref:typename:sector_t
+lzone_shift	raizn.h	/^	int lzone_shift, su_shift;$/;"	m	struct:raizn_params	typeref:typename:int
+lzone_size_sectors	raizn.h	/^	sector_t lzone_size_sectors;$/;"	m	struct:raizn_params	typeref:typename:sector_t
+lzones	raizn.h	/^	struct raizn_zone *lzones;$/;"	m	struct:raizn_zone_mgr	typeref:struct:raizn_zone *
+magic	raizn.h	/^		uint32_t magic, logtype;$/;"	m	struct:raizn_md_header::raizn_md_header_header	typeref:typename:uint32_t
+magic	raizn.h	/^		uint64_t magic;$/;"	m	struct:raizn_zone_mgr::__anon3523ddbf0208	typeref:typename:uint64_t
+md_zone	raizn.h	/^	struct raizn_zone *md_zone[RAIZN_ZONE_NUM_MD_TYPES];$/;"	m	struct:raizn_dev	typeref:struct:raizn_zone * []
+next	raizn.h	/^	struct raizn_stripe_head *next;$/;"	m	struct:raizn_stripe_head	typeref:struct:raizn_stripe_head *
+num_gc_workers	raizn.h	/^	int num_io_workers, num_gc_workers;$/;"	m	struct:raizn_ctx	typeref:typename:int
+num_io_workers	raizn.h	/^	int num_io_workers, num_gc_workers;$/;"	m	struct:raizn_ctx	typeref:typename:int
+num_threads	raizn.h	/^	int num_threads;$/;"	m	struct:raizn_workqueue	typeref:typename:int
+num_zones	raizn.h	/^	int num_zones;$/;"	m	struct:raizn_params	typeref:typename:int
+num_zones	raizn.h	/^	unsigned int num_zones;$/;"	m	struct:raizn_dev	typeref:typename:unsigned int
+obj-m	Makefile	/^obj-m = raizn.o$/;"	m
+op	raizn.h	/^	raizn_op_t op;$/;"	m	struct:raizn_stripe_head	typeref:typename:raizn_op_t
+open_zones	raizn.h	/^	unsigned long *open_zones; \/\/ Bitmap of open zones that haven't been rebuilt yet$/;"	m	struct:raizn_rebuild_mgr	typeref:typename:unsigned long *
+orig_bio	raizn.h	/^	struct bio *orig_bio; \/\/ Original bio submitted by upper layer$/;"	m	struct:raizn_stripe_head	typeref:struct:bio *
+padding	raizn.h	/^	char padding[PAGE_SIZE - (sizeof(struct raizn_params) - sizeof(int))];$/;"	m	struct:raizn_superblock	typeref:typename:char[]
+params	raizn.h	/^	struct raizn_params *params;$/;"	m	struct:raizn_ctx	typeref:struct:raizn_params *
+params	raizn.h	/^	struct raizn_params params;$/;"	m	struct:raizn_superblock	typeref:struct:raizn_params
+parity_bufs	raizn.h	/^	uint8_t *parity_bufs;$/;"	m	struct:raizn_stripe_head	typeref:typename:uint8_t *
+persistence_bitmap	raizn.h	/^		unsigned long *persistence_bitmap;$/;"	m	union:raizn_zone::__anon3523ddbf010a	typeref:typename:unsigned long *
+preflush	raizn.h	/^		atomic_t preflush, fua;$/;"	m	struct:raizn_ctx::__anon3523ddbf0308	typeref:typename:atomic_t
+printd	raizn.h	/^#define printd(/;"	d
+profile_bio	raizn.h	/^#define profile_bio(/;"	d
+raizn	raizn.c	/^static struct target_type raizn = {$/;"	v	typeref:struct:target_type	file:
+raizn_alloc_md	raizn.c	/^static struct raizn_sub_io *raizn_alloc_md(struct raizn_stripe_head *sh,$/;"	f	typeref:struct:raizn_sub_io *	file:
+raizn_bio_parity	raizn.c	/^static int raizn_bio_parity(struct raizn_ctx *ctx, struct bio *src, void *dst)$/;"	f	typeref:typename:int	file:
+raizn_command	raizn.c	/^static int raizn_command(struct raizn_ctx *ctx, int argc, char **argv,$/;"	f	typeref:typename:int	file:
+raizn_ctr	raizn.c	/^int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)$/;"	f	typeref:typename:int
+raizn_ctx	raizn.h	/^struct raizn_ctx {$/;"	s
+raizn_degraded_read_reconstruct	raizn.c	/^static void raizn_degraded_read_reconstruct(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:void	file:
+raizn_dev	raizn.h	/^struct raizn_dev {$/;"	s
+raizn_dtr	raizn.c	/^static void raizn_dtr(struct dm_target *ti)$/;"	f	typeref:typename:void	file:
+raizn_endio	raizn.c	/^static void raizn_endio(struct bio *bio)$/;"	f	typeref:typename:void	file:
+raizn_flush	raizn.c	/^static int raizn_flush(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_gc	raizn.c	/^static void raizn_gc(struct work_struct *work)$/;"	f	typeref:typename:void	file:
+raizn_handle_io_mt	raizn.c	/^static void raizn_handle_io_mt(struct work_struct *work)$/;"	f	typeref:typename:void	file:
+raizn_init_devs	raizn.c	/^static int raizn_init_devs(struct raizn_ctx *ctx)$/;"	f	typeref:typename:int	file:
+raizn_init_volume	raizn.c	/^static int raizn_init_volume(struct raizn_ctx *ctx)$/;"	f	typeref:typename:int	file:
+raizn_io_hints	raizn.c	/^static void raizn_io_hints(struct dm_target *ti, struct queue_limits *limits)$/;"	f	typeref:typename:void	file:
+raizn_iterate_devices	raizn.c	/^static int raizn_iterate_devices(struct dm_target *ti,$/;"	f	typeref:typename:int	file:
+raizn_map	raizn.c	/^static int raizn_map(struct dm_target *ti, struct bio *bio)$/;"	f	typeref:typename:int	file:
+raizn_md_header	raizn.h	/^struct __attribute__((__packed__)) raizn_md_header {$/;"	s
+raizn_md_header_header	raizn.h	/^	struct __attribute__((__packed__)) raizn_md_header_header {$/;"	s	struct:raizn_md_header
+raizn_md_lba	raizn.c	/^static struct raizn_zone *raizn_md_lba(struct raizn_stripe_head *sh,$/;"	f	typeref:struct:raizn_zone *	file:
+raizn_message	raizn.c	/^static int raizn_message(struct dm_target *ti, unsigned argc, char **argv,$/;"	f	typeref:typename:int	file:
+raizn_op	raizn.c	/^static inline raizn_op_t raizn_op(struct bio *bio)$/;"	f	typeref:typename:raizn_op_t	file:
+raizn_op_t	raizn.h	/^} raizn_op_t;$/;"	t	typeref:enum:__anon3523ddbf0403
+raizn_params	raizn.h	/^struct raizn_params {$/;"	s
+raizn_prepare_ioctl	raizn.c	/^static int raizn_prepare_ioctl(struct dm_target *ti, struct block_device **bdev)$/;"	f	typeref:typename:int	file:
+raizn_process_stripe_head	raizn.c	/^static int raizn_process_stripe_head(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_queue_gc	raizn.c	/^static void raizn_queue_gc(struct raizn_dev *dev)$/;"	f	typeref:typename:void	file:
+raizn_read	raizn.c	/^static int raizn_read(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_read_simple	raizn.c	/^static inline int raizn_read_simple(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_rebuild_endio	raizn.c	/^static void raizn_rebuild_endio(struct bio *bio)$/;"	f	typeref:typename:void	file:
+raizn_rebuild_mgr	raizn.h	/^struct raizn_rebuild_mgr {$/;"	s
+raizn_rebuild_mgr_deinit	raizn.c	/^static void raizn_rebuild_mgr_deinit(struct raizn_rebuild_mgr *buf)$/;"	f	typeref:typename:void	file:
+raizn_rebuild_mgr_init	raizn.c	/^static int raizn_rebuild_mgr_init(struct raizn_ctx *ctx,$/;"	f	typeref:typename:int	file:
+raizn_rebuild_next	raizn.c	/^static int raizn_rebuild_next(struct raizn_ctx *ctx)$/;"	f	typeref:typename:int	file:
+raizn_rebuild_prepare	raizn.c	/^static void raizn_rebuild_prepare(struct raizn_ctx *ctx, struct raizn_dev *dev)$/;"	f	typeref:typename:void	file:
+raizn_rebuild_read_next_stripe	raizn.c	/^static void raizn_rebuild_read_next_stripe(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:void	file:
+raizn_record_op	raizn.c	/^static void raizn_record_op(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:void	file:
+raizn_report_zones	raizn.c	/^static int raizn_report_zones(struct dm_target *ti,$/;"	f	typeref:typename:int	file:
+raizn_resume	raizn.c	/^static void raizn_resume(struct dm_target *ti)$/;"	f	typeref:typename:void	file:
+raizn_status	raizn.c	/^static void raizn_status(struct dm_target *ti, status_type_t type,$/;"	f	typeref:typename:void	file:
+raizn_stripe_buffer	raizn.h	/^struct raizn_stripe_buffer {$/;"	s
+raizn_stripe_buffer_parity	raizn.c	/^static size_t raizn_stripe_buffer_parity(struct raizn_ctx *ctx,$/;"	f	typeref:typename:size_t	file:
+raizn_stripe_head	raizn.h	/^struct raizn_stripe_head {$/;"	s
+raizn_stripe_head_add_bio	raizn.c	/^raizn_stripe_head_add_bio(struct raizn_stripe_head *sh, struct bio *bio,$/;"	f	typeref:struct:raizn_sub_io *	file:
+raizn_stripe_head_alloc	raizn.c	/^raizn_stripe_head_alloc(struct raizn_ctx *ctx, struct bio *bio, raizn_op_t op)$/;"	f	typeref:struct:raizn_stripe_head *	file:
+raizn_stripe_head_alloc_bio	raizn.c	/^raizn_stripe_head_alloc_bio(struct raizn_stripe_head *sh,$/;"	f	typeref:struct:raizn_sub_io *	file:
+raizn_stripe_head_alloc_subio	raizn.c	/^raizn_stripe_head_alloc_subio(struct raizn_stripe_head *sh,$/;"	f	typeref:struct:raizn_sub_io *	file:
+raizn_stripe_head_free	raizn.c	/^static void raizn_stripe_head_free(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:void	file:
+raizn_stripe_head_hold_completion	raizn.c	/^static void raizn_stripe_head_hold_completion(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:void	file:
+raizn_stripe_head_release_completion	raizn.c	/^static void raizn_stripe_head_release_completion(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:void	file:
+raizn_sub_io	raizn.h	/^struct raizn_sub_io {$/;"	s
+raizn_superblock	raizn.h	/^struct __attribute__((__packed__)) raizn_superblock {$/;"	s
+raizn_suspend	raizn.c	/^static void raizn_suspend(struct dm_target *ti)$/;"	f	typeref:typename:void	file:
+raizn_swap_mdzone	raizn.c	/^struct raizn_zone *raizn_swap_mdzone(struct raizn_stripe_head *sh,$/;"	f	typeref:struct:raizn_zone *
+raizn_test_parse_command	raizn.c	/^void raizn_test_parse_command(int argc, char **argv)$/;"	f	typeref:typename:void
+raizn_workqueue	raizn.h	/^struct raizn_workqueue {$/;"	s
+raizn_workqueue_deinit	raizn.c	/^static void raizn_workqueue_deinit(struct raizn_workqueue *wq)$/;"	f	typeref:typename:void	file:
+raizn_workqueue_init	raizn.c	/^static int raizn_workqueue_init(struct raizn_ctx *ctx,$/;"	f	typeref:typename:int	file:
+raizn_wq	raizn.c	/^struct workqueue_struct *raizn_wq;$/;"	v	typeref:struct:workqueue_struct *
+raizn_write	raizn.c	/^static int raizn_write(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_write_md	raizn.c	/^static int raizn_write_md(struct raizn_stripe_head *sh, sector_t lzoneno,$/;"	f	typeref:typename:int	file:
+raizn_zone	raizn.h	/^struct raizn_zone {$/;"	s
+raizn_zone_append	raizn.c	/^static int raizn_zone_append(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_zone_close	raizn.c	/^static int raizn_zone_close(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_zone_finish	raizn.c	/^static int raizn_zone_finish(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_zone_mgr	raizn.h	/^struct raizn_zone_mgr {$/;"	s
+raizn_zone_mgr_deinit	raizn.c	/^static void raizn_zone_mgr_deinit(struct raizn_ctx *ctx)$/;"	f	typeref:typename:void	file:
+raizn_zone_mgr_execute	raizn.c	/^static int raizn_zone_mgr_execute(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_zone_mgr_init	raizn.c	/^static int raizn_zone_mgr_init(struct raizn_ctx *ctx)$/;"	f	typeref:typename:int	file:
+raizn_zone_open	raizn.c	/^static int raizn_zone_open(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_zone_reset_all	raizn.c	/^static int raizn_zone_reset_all(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_zone_reset_bottom	raizn.c	/^static int raizn_zone_reset_bottom(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_zone_reset_top	raizn.c	/^static int raizn_zone_reset_top(struct raizn_stripe_head *sh)$/;"	f	typeref:typename:int	file:
+raizn_zone_stripe_buffers_deinit	raizn.c	/^static void raizn_zone_stripe_buffers_deinit(struct raizn_zone *lzone)$/;"	f	typeref:typename:void	file:
+raizn_zone_stripe_buffers_init	raizn.c	/^static int raizn_zone_stripe_buffers_init(struct raizn_ctx *ctx,$/;"	f	typeref:typename:int	file:
+raizn_zone_type	raizn.h	/^typedef enum raizn_zone_type {$/;"	g
+raizn_zone_type	raizn.h	/^} raizn_zone_type;$/;"	t	typeref:enum:raizn_zone_type
+read_sectors	raizn.h	/^		atomic64_t write_sectors, read_sectors;$/;"	m	struct:raizn_ctx::__anon3523ddbf0308	typeref:typename:atomic64_t
+reads	raizn.h	/^		atomic_t writes, reads, zone_resets, flushes;$/;"	m	struct:raizn_ctx::__anon3523ddbf0308	typeref:typename:atomic_t
+rebuild_buf	raizn.h	/^	struct raizn_rebuild_buffer *rebuild_buf;$/;"	m	struct:raizn_stripe_head	typeref:struct:raizn_rebuild_buffer *
+rebuild_mgr	raizn.h	/^	struct raizn_rebuild_mgr rebuild_mgr;$/;"	m	struct:raizn_zone_mgr	typeref:struct:raizn_rebuild_mgr
+refcount	raizn.h	/^	atomic_t refcount;$/;"	m	struct:raizn_stripe_head	typeref:typename:atomic_t
+refcount	raizn.h	/^	atomic_t refcount;$/;"	m	struct:raizn_zone	typeref:typename:atomic_t
+rlock	raizn.h	/^	spinlock_t wlock, rlock;$/;"	m	struct:raizn_workqueue	typeref:typename:spinlock_t
+rp	raizn.h	/^	sector_t rp, wp; \/\/ logical read pointer, physical write pointer$/;"	m	struct:raizn_rebuild_mgr	typeref:typename:sector_t
+sb	raizn.h	/^	struct raizn_superblock sb;$/;"	m	struct:raizn_dev	typeref:struct:raizn_superblock
+sentinel	raizn.h	/^	struct raizn_sub_io sentinel;$/;"	m	struct:raizn_stripe_head	typeref:struct:raizn_sub_io
+sh	raizn.h	/^	struct raizn_stripe_head *sh;$/;"	m	struct:raizn_sub_io	typeref:struct:raizn_stripe_head *
+start	raizn.h	/^		sector_t start, end;$/;"	m	struct:raizn_md_header::raizn_md_header_header	typeref:typename:sector_t
+start	raizn.h	/^	ktime_t start, end;$/;"	m	struct:raizn_rebuild_mgr	typeref:typename:ktime_t
+start	raizn.h	/^	sector_t start;$/;"	m	struct:raizn_zone	typeref:typename:sector_t
+status	raizn.h	/^	} status;$/;"	m	struct:raizn_stripe_head	typeref:enum:raizn_stripe_head::__anon3523ddbf0603
+stripe_buffers	raizn.h	/^	struct raizn_stripe_buffer *stripe_buffers;$/;"	m	struct:raizn_zone	typeref:struct:raizn_stripe_buffer *
+stripe_sectors	raizn.h	/^	sector_t stripe_sectors;$/;"	m	struct:raizn_params	typeref:typename:sector_t
+stripe_width	raizn.h	/^	int stripe_width;$/;"	m	struct:raizn_params	typeref:typename:int
+su_sectors	raizn.h	/^	sector_t su_sectors;$/;"	m	struct:raizn_params	typeref:typename:sector_t
+su_shift	raizn.h	/^	int lzone_shift, su_shift;$/;"	m	struct:raizn_params	typeref:typename:int
+sub_io_type	raizn.h	/^	sub_io_type_t sub_io_type;$/;"	m	struct:raizn_sub_io	typeref:typename:sub_io_type_t
+sub_io_type_t	raizn.h	/^} sub_io_type_t;$/;"	t	typeref:enum:__anon3523ddbf0503
+sub_ios	raizn.h	/^	struct raizn_sub_io *sub_ios[RAIZN_MAX_SUB_IOS];$/;"	m	struct:raizn_stripe_head	typeref:struct:raizn_sub_io * []
+subio_idx	raizn.h	/^	atomic_t subio_idx;$/;"	m	struct:raizn_stripe_head	typeref:typename:atomic_t
+target_dev	raizn.h	/^	struct raizn_dev *target_dev;$/;"	m	struct:raizn_rebuild_mgr	typeref:struct:raizn_dev *
+wlock	raizn.h	/^	spinlock_t wlock, rlock;$/;"	m	struct:raizn_workqueue	typeref:typename:spinlock_t
+work	raizn.h	/^	struct work_struct work;$/;"	m	struct:raizn_workqueue	typeref:struct:work_struct
+wp	raizn.h	/^	sector_t rp, wp; \/\/ logical read pointer, physical write pointer$/;"	m	struct:raizn_rebuild_mgr	typeref:typename:sector_t
+wp	raizn.h	/^	volatile sector_t wp;$/;"	m	struct:raizn_zone	typeref:typename:volatile sector_t
+write_sectors	raizn.h	/^		atomic64_t write_sectors, read_sectors;$/;"	m	struct:raizn_ctx::__anon3523ddbf0308	typeref:typename:atomic64_t
+writes	raizn.h	/^		atomic_t writes, reads, zone_resets, flushes;$/;"	m	struct:raizn_ctx::__anon3523ddbf0308	typeref:typename:atomic_t
+zone	raizn.h	/^	struct raizn_zone *zone;$/;"	m	struct:raizn_stripe_head	typeref:struct:raizn_zone *
+zone	raizn.h	/^	struct raizn_zone *zone;$/;"	m	struct:raizn_sub_io	typeref:struct:raizn_zone *
+zone_generation	raizn.h	/^		uint64_t zone_generation;$/;"	m	struct:raizn_md_header::raizn_md_header_header	typeref:typename:uint64_t
+zone_generation	raizn.h	/^		uint64_t zone_generation[PAGE_SIZE \/ (sizeof(uint64_t) * 2) - 1];$/;"	m	struct:raizn_zone_mgr::__anon3523ddbf0208	typeref:typename:uint64_t[]
+zone_mgr	raizn.h	/^	struct raizn_zone_mgr zone_mgr;$/;"	m	struct:raizn_ctx	typeref:struct:raizn_zone_mgr
+zone_resets	raizn.h	/^		atomic_t writes, reads, zone_resets, flushes;$/;"	m	struct:raizn_ctx::__anon3523ddbf0308	typeref:typename:atomic_t
+zone_shift	raizn.h	/^	int zone_shift;$/;"	m	struct:raizn_dev	typeref:typename:int
+zone_type	raizn.h	/^	volatile raizn_zone_type zone_type;$/;"	m	struct:raizn_zone	typeref:typename:volatile raizn_zone_type
+zones	raizn.h	/^	struct raizn_zone *zones;$/;"	m	struct:raizn_dev	typeref:struct:raizn_zone *

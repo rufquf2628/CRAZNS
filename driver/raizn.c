@@ -667,7 +667,6 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			"dm-raizn: Invalid stripe unit size (must be a power of two and at least 4)";
 		goto err;
 	}
-	pr_info("SECTOR_SHIFT = %d, SECTOR_SIZE = %d\n", SECTOR_SHIFT, SECTOR_SIZE);
 	ctx->params->su_sectors = ctx->params->su_sectors >>
 				  SECTOR_SHIFT; // Convert from bytes to sectors
 	ctx->params->stripe_sectors =
@@ -731,7 +730,6 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	raizn_wq = alloc_workqueue(WQ_NAME, WQ_UNBOUND,
 				   ctx->num_io_workers + ctx->num_gc_workers);
 
-	// [Hangyul] TODO
 	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
 		// [Hangyul]
@@ -2267,7 +2265,7 @@ static int raizn_report_zones(struct dm_target *ti,
 	if (!nr_zones || zoneno > ctx->params->num_zones) {
 		return args->zone_idx;
 	}
-	
+
 	mutex_lock(&zone->lock);
 	report.start = zone->start;
 	report.len = ctx->params->lzone_size_sectors;
