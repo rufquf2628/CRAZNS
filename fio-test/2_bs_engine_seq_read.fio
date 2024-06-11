@@ -1,0 +1,12 @@
+
+
+for n in 16k 32k 64k 128k 256k 512k 1024k
+do
+	for m in psync libaio io_uring
+	do
+		echo blocksz $n engine $m
+		fio --bs=$n --ioengine=$m ./seq_read_fio.fio > ./results/seq_read_out/$n-$m.out
+	done
+done
+
+

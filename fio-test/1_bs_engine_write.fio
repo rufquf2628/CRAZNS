@@ -1,0 +1,17 @@
+
+bs=64k
+engine=psync
+
+for n in 16k 32k 64k 128k 256k 512k 1024k
+do
+	for m in psync libaio io_uring
+	do
+		./setup_raizn.sh
+		echo blocksz $n engine $m
+		fio --bs=$n --ioengine=$m ./write_fio.fio > ./results/write_out/$n-$m.out
+		./remove_raizn.sh
+	done
+done
+
+#fio --bs=$bs --ioengine=$engine ./write_fio.fio
+
