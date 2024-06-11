@@ -3,29 +3,22 @@ make
 modprobe raid456
 insmod raizn.ko
 
-dev1=/dev/nvme0n2
-dev2=/dev/nvme1n2
-dev3=/dev/nvme2n2
-dev4=/dev/nvme3n2
-dev5=/dev/nvme4n2
-
+dev1=/dev/nvme1n2
+dev2=/dev/nvme2n2
+dev3=/dev/nvme3n2
 
 nvme zns reset-zone $dev1 -a
 nvme zns reset-zone $dev2 -a
 nvme zns reset-zone $dev3 -a
-nvme zns reset-zone $dev4 -a
-nvme zns reset-zone $dev5 -a
 
-echo mq-deadline > /sys/block/nvme0n2/queue/scheduler
 echo mq-deadline > /sys/block/nvme1n2/queue/scheduler
 echo mq-deadline > /sys/block/nvme2n2/queue/scheduler
 echo mq-deadline > /sys/block/nvme3n2/queue/scheduler
-echo mq-deadline > /sys/block/nvme4n2/queue/scheduler
 
 volume=raizn
 
 bsz=`blockdev --getsize $dev1`
-sz=$(($bsz * 5))
+sz=$(($bsz * 3))
 
 echo $sz
 
@@ -39,7 +32,7 @@ gc_num=1
 #zone_cap=1102848
 zone_cap=0
 # Devices list, Parity 1 & Data 2
-devs="$dev1 $dev2 $dev3 $dev4 $dev5"
+devs="$dev1 $dev2 $dev3"
 
 echo creating RAIZN volume ..
 
