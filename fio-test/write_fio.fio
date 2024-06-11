@@ -1,0 +1,12 @@
+[global]
+#bs=64k
+#ioengine=psync
+filename=/dev/array
+direct=1
+rw=write
+numjobs=8
+zonemode=zbd
+size=20z
+offset_increment=20z
+group_reporting
+[job1]

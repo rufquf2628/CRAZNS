@@ -1,0 +1,11 @@
+[global]
+#bs=64k
+#ioengine=psync
+filename=/dev/array
+rw=randread
+numjobs=1
+iodepth=256
+zonemode=zbd
+size=20z
+group_reporting
+[job1]
