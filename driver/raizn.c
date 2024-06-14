@@ -548,13 +548,6 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		// [Hangyul] Buf dev init
 		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
 		buf_dev->idx = dev_idx;
-		//mutex_init(&buf_dev->lock);
-		//mutex_init(&buf_dev->bioset_lock);
-
-		//ret = bioset_init(&buf_dev->bioset, RAIZN_BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
-
-		//buf_dev->sb.params = *ctx->params;
-		//dev->sb.idx = buf_dev->idx;
 	}
 	return ret;
 }
@@ -1533,16 +1526,18 @@ static struct raizn_zone *raizn_md_lba(struct raizn_stripe_head *sh,
 // [Hangyul]
 static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 						sector_t lzoneno,
-						struct raizn_buf_dev *buf_dev, struct bio_set *bioset,
+						struct raizn_buf_dev *buf_dev, struct raizn_dev *dev,
 						raizn_zone_type mdtype, void *data,
 						size_t len)
 {
 	struct raizn_ctx *ctx = sh->ctx;
 	struct raizn_sub_io *mdio = raizn_stripe_head_alloc_bio(
-			sh, bioset, data ? 2 : 1, RAIZN_SUBIO_MD);
+			sh, &dev->bioset, data ? 2 : 1, RAIZN_SUBIO_MD);
 	struct bio *mdbio = mdio->bio;
 	struct page *p;
 
+	// May cause problem
+	mdio->zone = NULL;
 	mdio->header.header.zone_generation =
 		ctx->zone_mgr.gen_counts[lzoneno / RAIZN_GEN_COUNTERS_PER_PAGE]
 			.zone_generation[lzoneno % RAIZN_GEN_COUNTERS_PER_PAGE];
@@ -1552,7 +1547,7 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 	bio_set_op_attrs(mdbio, REQ_OP_WRITE, 0);
 	bio_set_dev(mdbio, buf_dev->dev->bdev);
 
-	// TODO
+	// Right?
 	mdbio->bi_iter.bi_sector = 0;
 
 	p = is_vmalloc_addr(&mdio->header) ? vmalloc_to_page(&mdio->header) :
@@ -1567,6 +1562,7 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 							virt_to_page(data);
 		if (bio_add_page(mdbio, p, len, 0) != len) {
 			pr_err("Failed to add md data page\n");
+			bio_endio(mdbio);
 			return NULL;
 		}
 	}
@@ -1623,7 +1619,23 @@ static struct raizn_sub_io *raizn_alloc_md(struct raizn_stripe_head *sh,
 	return mdio;
 }
 
-// [Hangyul] TODO
+
+static int raizn_write_md_buf(struct raizn_stripe_head *sh, sector_t lzoneno,
+				struct raizn_buf_dev *bdev, struct raizn_dev *dev,
+				raizn_zone_type mdtype,
+				void *data, size_t len)
+{
+	struct raizn_sub_io *mdio =
+		raizn_alloc_md_buf(sh, lzoneno, bdev, dev, mdtype, data, len);
+	if (!mdio) {
+		pr_err("Fatal: Failed to write metadata on buffer dev\n");
+		return -1;
+	}
+	submit_bio_noacct(mdio->bio);
+	return 0;
+}
+
+
 // Header must not be null, but data can be null
 // Returns 0 on success, nonzero on failure
 static int raizn_write_md(struct raizn_stripe_head *sh, sector_t lzoneno,
@@ -1727,7 +1739,20 @@ static int raizn_write(struct raizn_stripe_head *sh)
 				min(ctx->params->su_sectors,
 				    leading_substripe_sectors)
 				<< SECTOR_SHIFT;
+
+			// [Hangyul]
+			raizn_write_md_buf(
+					sh,
+					lba_to_lzone(ctx,
+						sh->orig_bio->bi_iter.bi_sector),
+					lba_to_parity_buf_dev(ctx, start_lba),
+					lba_to_parity_dev(ctx, start_lba),
+					RAIZN_ZONE_MD_PARITY_LOG,
+					sh->parity_bufs +
+						leading_substripe_start_offset_bytes,
+					leading_substripe_parity_bytes);
 			// Calculate and submit partial parity if the entire bio is a leading stripe
+			/*
 			raizn_write_md(
 				sh,
 				lba_to_lzone(ctx,
@@ -1737,6 +1762,7 @@ static int raizn_write(struct raizn_stripe_head *sh)
 				sh->parity_bufs +
 					leading_substripe_start_offset_bytes,
 				leading_substripe_parity_bytes);
+				*/
 		}
 	}
 	if (bio_sectors(sh->orig_bio) >
@@ -1774,6 +1800,17 @@ static int raizn_write(struct raizn_stripe_head *sh)
 			ctx, trailing_substripe_start_lba,
 			sh->parity_bufs +
 				(parity_su - 1) * ctx->params->su_sectors);
+
+		// [Hangyul]
+		raizn_write_md_buf(
+				sh, lba_to_lzone(ctx, sh->orig_bio->bi_iter.bi_sector),
+				lba_to_parity_buf_dev(ctx, trailing_substripe_start_lba),
+				lba_to_parity_dev(ctx, trailing_substripe_start_lba),
+				RAIZN_ZONE_MD_PARITY_LOG,
+				sh->parity_bufs +
+					(parity_su - 1) * ctx->params->su_sectors,
+					trailing_substripe_parity_bytes);
+		/*
 		raizn_write_md(
 			sh, lba_to_lzone(ctx, sh->orig_bio->bi_iter.bi_sector),
 			lba_to_parity_dev(ctx, trailing_substripe_start_lba),
@@ -1782,6 +1819,7 @@ static int raizn_write(struct raizn_stripe_head *sh)
 			sh->parity_bufs +
 				(parity_su - 1) * ctx->params->su_sectors,
 			trailing_substripe_parity_bytes);
+			*/
 	}
 	// Go stripe by stripe, splitting the bio and adding parity
 	// This handles data and parity for the *entire* bio, including leading and trailing substripes
