@@ -791,7 +791,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		
 	}
 	
-	/*
+	
 	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
 		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
@@ -805,6 +805,8 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			goto err;
 		}
 		bio->bi_iter.bi_sector = 0;
+		buf_dev->start_ppl = bio_end_sector(bio);
+		pr_info("start_ppl : %llu\n", buf_dev->start_ppl);
 		if (submit_bio_wait(bio)) {
 			ti->error = "IO error when writting superblock to buffer dev";
 			ret = -1;
@@ -812,7 +814,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		}
 		bio_put(bio);
 	}
-	*/
+	
 	return 0;
 
 err:
@@ -1556,7 +1558,7 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 	bio_set_dev(mdbio, buf_dev->dev->bdev);
 
 	// Right?
-	mdbio->bi_iter.bi_sector = 0;
+	mdbio->bi_iter.bi_sector = buf_dev->start_ppl << SECTOR_SHIFT;
 
 	p = is_vmalloc_addr(&mdio->header) ? vmalloc_to_page(&mdio->header) :
 							virt_to_page(&mdio->header);

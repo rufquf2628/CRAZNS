@@ -154,7 +154,7 @@ struct raizn_buf_dev {
 	//struct mutex lock, bioset_lock;
 
 	// Start address of parity space of buffer
-	//sector_t parity_start;
+	sector_t start_ppl;
 
 	int idx;
 	//struct raizn_superblock sb;
