@@ -20,6 +20,11 @@ static void raizn_gc(struct work_struct *work);
 static void raizn_endio(struct bio *bio);
 static void raizn_rebuild_endio(struct bio *bio);
 static int raizn_process_stripe_head(struct raizn_stripe_head *sh);
+static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
+						sector_t lzoneno,
+						struct raizn_buf_dev *buf_dev, struct raizn_dev *dev,
+						raizn_zone_type mdtype, void *data,
+						size_t len);
 static struct raizn_sub_io *raizn_alloc_md(struct raizn_stripe_head *sh,
 					   sector_t lzoneno,
 					   struct raizn_dev *dev,
