@@ -1017,7 +1017,10 @@ static void raizn_endio(struct bio *bio)
 		}
 	}
 	if (subio->sub_io_type == RAIZN_SUBIO_MD) {
-		atomic_dec(&subio->zone->refcount);
+		if (subio->zone) {
+			atomic_dec(&subio->zone->refcount);
+		}
+		//atomic_dec(&subio->zone->refcount);
 	}
 	if (sh->op == RAIZN_OP_REBUILD_INGEST ||
 	    sh->op == RAIZN_OP_REBUILD_FLUSH) {
