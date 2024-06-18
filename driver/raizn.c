@@ -553,6 +553,7 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		// [Hangyul] Buf dev init
 		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
 		buf_dev->idx = dev_idx;
+		buf_dev->start_md = 0;
 	}
 	return ret;
 }
@@ -804,7 +805,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			ti->error = "Failed to write superblock";
 			goto err;
 		}
-		bio->bi_iter.bi_sector = 0;
+		bio->bi_iter.bi_sector = buf_dev->start_md;
 		buf_dev->start_ppl = bio_end_sector(bio);
 		pr_info("start_ppl : %llu\n", buf_dev->start_ppl);
 		if (submit_bio_wait(bio)) {
@@ -1558,8 +1559,12 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 	bio_set_dev(mdbio, buf_dev->dev->bdev);
 
 	// Right?
-	mdbio->bi_iter.bi_sector = buf_dev->start_ppl << SECTOR_SHIFT;
-
+	if (mdtype == RAIZN_ZONE_MD_GENERAL) {
+		mdbio->bi_iter.bi_sector = buf_dev->start_md << SECTOR_SHIFT;
+	}
+	else if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
+		mdbio->bi_iter.bi_sector = buf_dev->start_ppl << SECTOR_SHIFT;
+	}
 	p = is_vmalloc_addr(&mdio->header) ? vmalloc_to_page(&mdio->header) :
 							virt_to_page(&mdio->header);
 	if (bio_add_page(mdbio, p, PAGE_SIZE, offset_in_page(&mdio->header)) != PAGE_SIZE) {
@@ -2238,19 +2243,36 @@ static int raizn_zone_reset_top(struct raizn_stripe_head *sh)
 		lba_to_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
 	struct raizn_dev *parity_dev =
 		lba_to_parity_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
+	
+	// [Hangyul]
+	struct raizn_buf_dev *bdev =
+		lba_to_parity_buf_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
+
 	int zoneno = lba_to_lzone(ctx, sh->orig_bio->bi_iter.bi_sector);
 	struct raizn_stripe_head *log_sh =
 		raizn_stripe_head_alloc(ctx, NULL, RAIZN_OP_ZONE_RESET_LOG);
+	
+	// [Hangyul]
+	struct raizn_sub_io *devlog =
+		raizn_alloc_md_buf(sh, zoneno, bdev, dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);
+	struct raizn_sub_io *pdevlog =
+		raizn_alloc_md_buf(sh, zoneno, bdev, parity_dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);
+	/*
 	struct raizn_sub_io *devlog =
 		raizn_alloc_md(sh, zoneno, dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);
 	struct raizn_sub_io *pdevlog = raizn_alloc_md(
 		sh, zoneno, parity_dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);
+	*/
+
 	raizn_stripe_head_hold_completion(log_sh);
 	sh->op = RAIZN_OP_ZONE_RESET;
 	log_sh->next = sh; // Defer the original stripe head
 	BUG_ON(!devlog || !pdevlog);
-	bio_set_op_attrs(devlog->bio, REQ_OP_ZONE_APPEND, REQ_FUA);
-	bio_set_op_attrs(pdevlog->bio, REQ_OP_ZONE_APPEND, REQ_FUA);
+	// [Hangyul]
+	bio_set_op_attrs(devlog->bio, REQ_OP_WRITE, REQ_FUA);
+	bio_set_op_attrs(pdevlog->bio, REQ_OP_WRITE, REQ_FUA);
+	//bio_set_op_attrs(devlog->bio, REQ_OP_ZONE_APPEND, REQ_FUA);
+	//bio_set_op_attrs(pdevlog->bio, REQ_OP_ZONE_APPEND, REQ_FUA);
 	devlog->header.header.logtype = RAIZN_MD_RESET_LOG;
 	pdevlog->header.header.logtype = RAIZN_MD_RESET_LOG;
 	devlog->header.header.start = sh->orig_bio->bi_iter.bi_sector;

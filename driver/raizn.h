@@ -153,7 +153,9 @@ struct raizn_buf_dev {
 	//struct bio_set bioset;
 	//struct mutex lock, bioset_lock;
 
-	// Start address of parity space of buffer
+	// Start sector of md general of buffer
+	sector_t start_md;
+	// Start sector of partial parity log of buffer
 	sector_t start_ppl;
 
 	int idx;
