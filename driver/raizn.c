@@ -1976,6 +1976,8 @@ static int raizn_read(struct raizn_stripe_head *sh)
 	if (bitmap_empty(ctx->dev_status, RAIZN_MAX_DEVS)) {
 		return raizn_read_simple(sh);
 	} else {
+		// DEBUG
+		pr_info("raizn_read else\n");
 		int failed_dev_idx =
 			find_first_bit(ctx->dev_status, RAIZN_MAX_DEVS);
 		raizn_stripe_head_hold_completion(sh);
