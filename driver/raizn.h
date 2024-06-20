@@ -134,9 +134,9 @@ struct raizn_dev {
 	struct bio_set bioset; // for allocating RAIZN-specific bios for this device
 	struct mutex lock, bioset_lock;
 	struct raizn_zone *zones;
-	spinlock_t free_rlock, free_wlock;
-	DECLARE_KFIFO_PTR(free_zone_fifo, struct raizn_zone *);
-	struct raizn_zone *md_zone[RAIZN_ZONE_NUM_MD_TYPES];
+	//spinlock_t free_rlock, free_wlock;
+	//DECLARE_KFIFO_PTR(free_zone_fifo, struct raizn_zone *);
+	//struct raizn_zone *md_zone[RAIZN_ZONE_NUM_MD_TYPES];
 	struct raizn_workqueue gc_ingest_workers;
 	struct raizn_workqueue gc_flush_workers;
 	int zone_shift;

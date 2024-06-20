@@ -25,12 +25,13 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 						struct raizn_buf_dev *buf_dev, struct raizn_dev *dev,
 						raizn_zone_type mdtype, void *data,
 						size_t len);
+/*
 static struct raizn_sub_io *raizn_alloc_md(struct raizn_stripe_head *sh,
 					   sector_t lzoneno,
 					   struct raizn_dev *dev,
 					   raizn_zone_type mdtype, void *data,
 					   size_t len);
-
+*/
 static inline raizn_op_t raizn_op(struct bio *bio)
 {
 	if (bio) {
@@ -200,10 +201,12 @@ static inline sector_t lba_to_pba_default(struct raizn_ctx *ctx, sector_t lba)
 	       stripe_id * ctx->params->su_sectors + offset;
 }
 
+/*
 static void raizn_queue_gc(struct raizn_dev *dev)
 {
 	queue_work(raizn_wq, &dev->gc_flush_workers.work);
 }
+*/
 
 // Constructors and destructors for most data structures
 static void raizn_workqueue_deinit(struct raizn_workqueue *wq)
@@ -508,7 +511,8 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		mutex_init(&dev->bioset_lock);
 		dev->zone_shift = ilog2(dev->zones[0].len);
 		dev->idx = dev_idx;
-		
+
+		/*
 		spin_lock_init(&dev->free_wlock);
 		spin_lock_init(&dev->free_rlock);
 
@@ -540,7 +544,8 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 				dev->md_zone[mdtype]->start >> dev->zone_shift,
 				dev->md_zone[mdtype]->start);
 		}
-		
+		*/
+
 		raizn_workqueue_init(ctx, &dev->gc_ingest_workers,
 				     ctx->num_gc_workers, raizn_gc);
 		dev->gc_ingest_workers.dev = dev;
@@ -571,7 +576,6 @@ static int raizn_init_volume(struct raizn_ctx *ctx)
 			ctx->devs[0].zones[0].capacity *
 			ctx->params->stripe_width;
 		zone_cap = ctx->devs[0].zones[0].capacity;
-		pr_info("zone_cap = %lld, num_zones = %d\n", zone_cap, ctx->devs[0].num_zones);
 		ctx->params->num_zones = ctx->devs[0].num_zones;
 		for (dev_idx = 0; dev_idx < ctx->params->array_width;
 		     ++dev_idx) {
@@ -595,7 +599,7 @@ static int raizn_init_volume(struct raizn_ctx *ctx)
 	// TODO: change for configurable zone size
 
 	// [Hangyul] TODO
-	ctx->params->num_zones -= RAIZN_RESERVED_ZONES;
+	//ctx->params->num_zones -= RAIZN_RESERVED_ZONES;
 	return 0;
 }
 
@@ -624,9 +628,11 @@ static void deallocate_target(struct dm_target *ti)
 				bioset_exit(&dev->bioset);
 			}
 			kvfree(dev->zones);
+			/*
 			if (kfifo_initialized(&dev->free_zone_fifo)) {
 				kfifo_free(&dev->free_zone_fifo);
 			}
+			*/
 			raizn_workqueue_deinit(&dev->gc_ingest_workers);
 			raizn_workqueue_deinit(&dev->gc_flush_workers);
 		}
@@ -766,7 +772,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 				   ctx->num_io_workers + ctx->num_gc_workers);
 
 	// [Hangyul] TODO
-	
+	/*	
 	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
 		struct bio *bio = bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &dev->bioset);
@@ -791,7 +797,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		bio_put(bio);
 		
 	}
-	
+	*/
 	
 	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
@@ -807,7 +813,6 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		}
 		bio->bi_iter.bi_sector = buf_dev->start_md;
 		buf_dev->start_ppl = bio_end_sector(bio);
-		pr_info("start_ppl : %llu\n", buf_dev->start_ppl);
 		if (submit_bio_wait(bio)) {
 			ti->error = "IO error when writting superblock to buffer dev";
 			ret = -1;
@@ -909,6 +914,8 @@ static int raizn_zone_mgr_execute(struct raizn_stripe_head *sh)
 
 static void raizn_degraded_read_reconstruct(struct raizn_stripe_head *sh)
 {
+	// DEBUG
+	pr_info("raizn_degraded_read_reconstruct\n");
 	struct raizn_ctx *ctx = sh->ctx;
 	sector_t start_lba = sh->orig_bio->bi_iter.bi_sector;
 	sector_t cur_lba = start_lba;
@@ -1309,6 +1316,7 @@ static void raizn_gc(struct work_struct *work)
 	struct raizn_stripe_head *sh;
 	while (kfifo_out_spinlocked(&wq->work_fifo, &sh, 1, &wq->rlock)) {
 		struct raizn_ctx *ctx = sh->ctx;
+		/*
 		struct raizn_zone *gczone = sh->zone;
 		if (sh->op == RAIZN_OP_GC && gczone->wp > gczone->start) {
 			if (gczone->wp > gczone->start) {
@@ -1417,7 +1425,8 @@ static void raizn_gc(struct work_struct *work)
 						    &gczone, 1,
 						    &dev->free_wlock);
 			}
-		} else if (sh->op == RAIZN_OP_REBUILD_INGEST) {
+		} else */
+		if (sh->op == RAIZN_OP_REBUILD_INGEST) {
 			int next_zone;
 			raizn_rebuild_prepare(ctx, dev);
 			if ((next_zone = raizn_rebuild_next(ctx)) >= 0) {
@@ -1482,6 +1491,7 @@ static void raizn_gc(struct work_struct *work)
 // Returns the new zone PBA on success, -1 on failure
 // This function invokes the garbage collector
 // Caller is responsible for holding dev->lock
+/*
 struct raizn_zone *raizn_swap_mdzone(struct raizn_stripe_head *sh,
 				     struct raizn_dev *dev,
 				     raizn_zone_type mdtype,
@@ -1510,10 +1520,11 @@ struct raizn_zone *raizn_swap_mdzone(struct raizn_stripe_head *sh,
 	}
 	return new_md_zone;
 }
-
+*/
 // [Hangyul] TODO
 // Returns the LBA that the metadata should be written at
 // RAIZN uses zone appends, so the LBA will align to a zone start
+/*
 static struct raizn_zone *raizn_md_lba(struct raizn_stripe_head *sh,
 				       struct raizn_dev *dev,
 				       raizn_zone_type mdtype,
@@ -1533,6 +1544,7 @@ static struct raizn_zone *raizn_md_lba(struct raizn_stripe_head *sh,
 	BUG_ON(mdzone->start >> dev->zone_shift < sh->ctx->params->num_zones);
 	return mdzone;
 }
+*/
 
 // [Hangyul]
 static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
@@ -1585,6 +1597,7 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 	return mdio;
 }
 
+/*
 static struct raizn_sub_io *raizn_alloc_md(struct raizn_stripe_head *sh,
 					   sector_t lzoneno,
 					   struct raizn_dev *dev,
@@ -1633,7 +1646,7 @@ static struct raizn_sub_io *raizn_alloc_md(struct raizn_stripe_head *sh,
 	       bio_sectors(mdbio));
 	return mdio;
 }
-
+*/
 
 static int raizn_write_md_buf(struct raizn_stripe_head *sh, sector_t lzoneno,
 				struct raizn_buf_dev *bdev, struct raizn_dev *dev,
@@ -1653,6 +1666,7 @@ static int raizn_write_md_buf(struct raizn_stripe_head *sh, sector_t lzoneno,
 
 // Header must not be null, but data can be null
 // Returns 0 on success, nonzero on failure
+/*
 static int raizn_write_md(struct raizn_stripe_head *sh, sector_t lzoneno,
 			  struct raizn_dev *dev, raizn_zone_type mdtype,
 			  void *data, size_t len)
@@ -1666,6 +1680,7 @@ static int raizn_write_md(struct raizn_stripe_head *sh, sector_t lzoneno,
 	submit_bio_noacct(mdio->bio);
 	return 0;
 }
+*/
 
 // Alloc bio starting at lba if it doesn't exist, otherwise add to existing bio
 static struct bio *check_alloc_dev_bio(struct raizn_stripe_head *sh,
