@@ -2521,8 +2521,11 @@ static int raizn_command(struct raizn_ctx *ctx, int argc, char **argv,
 						 GFP_NOIO);
 			}
 			// 2. Reset all physical zone descriptors for this device
+			// [Hangyul] BUG on parameter
 			blkdev_report_zones(dev->dev->bdev, 0, dev->num_zones,
-					    init_pzone_descriptor, dev->zones);
+						init_pzone_descriptor, dev);
+			/*blkdev_report_zones(dev->dev->bdev, 0, dev->num_zones,
+					    init_pzone_descriptor, dev->zones);*/
 			// 3. Schedule rebuild
 			ctx->zone_mgr.rebuild_mgr.start = ktime_get();
 			kfifo_in_spinlocked(&dev->gc_ingest_workers.work_fifo,
