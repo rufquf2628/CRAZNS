@@ -169,6 +169,12 @@ static inline sector_t lba_to_stripe_offset(struct raizn_ctx *ctx, sector_t lba)
 {
 	return lba_to_lzone_offset(ctx, lba) % ctx->params->stripe_sectors;
 }
+
+static inline sector_t ppl_buf_start_sector(struct raizn_ctx *ctx, sector_t lba)
+{
+	return lba % ctx->params->buf_nr_sectors;
+}
+
 // What is the offset of LBA within the stripe unit (in 512b sectors)
 static inline sector_t lba_to_su_offset(struct raizn_ctx *ctx, sector_t lba)
 {
@@ -600,6 +606,9 @@ static int raizn_init_volume(struct raizn_ctx *ctx)
 
 	// [Hangyul] TODO
 	//ctx->params->num_zones -= RAIZN_RESERVED_ZONES;
+	ctx->params->buf_nr_sectors = bdev_nr_sectors(ctx->buf_devs[0].dev->bdev);
+	// DEBUG
+	pr_info("bdev nr sectors = %llu\n", ctx->params->buf_nr_sectors);
 	return 0;
 }
 
@@ -755,8 +764,11 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			ti->error = "dm-raizn: Buffer device lookup failed";
 			goto err;
 		}
+		// DEBUG
+		pr_info("bd_nr_sectors = %llu\n", bdev_nr_sectors(ctx->buf_devs[buf_idx].dev->bdev));
 	}
 	
+
 	if (raizn_init_devs(ctx) != 0) {
 		goto err;
 	}
@@ -813,6 +825,8 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		}
 		bio->bi_iter.bi_sector = buf_dev->start_md;
 		buf_dev->start_ppl = bio_end_sector(bio);
+		buf_dev->end_ppl = buf_dev->start_ppl;
+		pr_info("start_ppl = %llu\n", buf_dev->start_ppl);
 		if (submit_bio_wait(bio)) {
 			ti->error = "IO error when writting superblock to buffer dev";
 			ret = -1;
@@ -1575,7 +1589,9 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 		mdbio->bi_iter.bi_sector = buf_dev->start_md << SECTOR_SHIFT;
 	}
 	else if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
-		mdbio->bi_iter.bi_sector = buf_dev->start_ppl << SECTOR_SHIFT;
+		sector_t sec = ppl_buf_start_sector(ctx, buf_dev->end_ppl);
+		buf_dev->start_ppl = sec < buf_dev->end_md ? buf_dev->end_md : sec;
+		mdbio->bi_iter.bi_sector = buf_dev->start_ppl;
 	}
 	p = is_vmalloc_addr(&mdio->header) ? vmalloc_to_page(&mdio->header) :
 							virt_to_page(&mdio->header);
@@ -1593,7 +1609,9 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 			return NULL;
 		}
 	}
-
+	if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
+		buf_dev->end_ppl = bio_end_sector(mdbio);
+	}
 	return mdio;
 }
 

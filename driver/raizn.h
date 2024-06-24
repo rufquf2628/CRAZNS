@@ -74,6 +74,7 @@ struct raizn_params {
 	int lzone_shift, su_shift;
 	/* [Hangyul] Number of buffer drives */
 	int buf_width;
+	sector_t buf_nr_sectors;
 };
 
 // Per-device superblock
@@ -150,16 +151,14 @@ struct raizn_dev {
 struct raizn_buf_dev {
 	struct dm_dev *dev;
 
-	//struct bio_set bioset;
-	//struct mutex lock, bioset_lock;
-
 	// Start sector of md general of buffer
 	sector_t start_md;
+	sector_t end_md;
 	// Start sector of partial parity log of buffer
 	sector_t start_ppl;
+	sector_t end_ppl;
 
 	int idx;
-	//struct raizn_superblock sb;
 };
 
 struct __attribute__((__packed__)) raizn_md_header {
