@@ -564,7 +564,7 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		// [Hangyul] Buf dev init
 		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
 		buf_dev->idx = dev_idx;
-		buf_dev->start_md = 0;
+		buf_dev->start_sb = 0;
 	}
 	return ret;
 }
@@ -823,9 +823,19 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			ti->error = "Failed to write superblock";
 			goto err;
 		}
-		bio->bi_iter.bi_sector = buf_dev->start_md;
-		buf_dev->start_ppl = bio_end_sector(bio);
+		bio->bi_iter.bi_sector = buf_dev->start_sb;
+		buf_dev->end_sb = bio_end_sector(bio);
+		
+		buf_dev->start_md = buf_dev->end_sb;
+		buf_dev->end_md = buf_dev->start_md + (PAGE_SIZE / SECTOR_SIZE);
+
+		// DEBUG
+		pr_info("start_md %llu, end_md %llu\n", buf_dev->start_md, buf_dev->end_md);
+
+		buf_dev->start_ppl = buf_dev->end_md;
 		buf_dev->end_ppl = buf_dev->start_ppl;
+
+		// DEBUG
 		pr_info("start_ppl = %llu\n", buf_dev->start_ppl);
 		if (submit_bio_wait(bio)) {
 			ti->error = "IO error when writting superblock to buffer dev";
@@ -1586,7 +1596,7 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 
 	// Right?
 	if (mdtype == RAIZN_ZONE_MD_GENERAL) {
-		mdbio->bi_iter.bi_sector = buf_dev->start_md << SECTOR_SHIFT;
+		mdbio->bi_iter.bi_sector = buf_dev->start_md;
 	}
 	else if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
 		sector_t sec = ppl_buf_start_sector(ctx, buf_dev->end_ppl);
@@ -1611,6 +1621,9 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 	}
 	if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
 		buf_dev->end_ppl = bio_end_sector(mdbio);
+
+		// DEBUG
+		pr_info("start_ppl %llu, end_ppl %llu\n", buf_dev->start_ppl, buf_dev->end_ppl);
 	}
 	return mdio;
 }
@@ -1747,6 +1760,11 @@ static int raizn_write(struct raizn_stripe_head *sh)
 		(bio_sectors(sh->orig_bio) - leading_substripe_sectors) %
 		ctx->params->stripe_sectors;
 	// Maximum number of parity to write. This could be better, as it currently ignores cases where a subset of the final parity is known
+
+	// DEBUG
+	//pr_info("start %llu, leading_end %llu, leading_substripe %llu, trailing_substripe %llu\n", start_lba,
+	//		leading_stripe_end_lba, leading_substripe_sectors, trailing_substripe_sectors);
+
 	int parity_su = (bio_sectors(sh->orig_bio) - leading_substripe_sectors -
 			 trailing_substripe_sectors) /
 				ctx->params->stripe_sectors +
@@ -1901,7 +1919,6 @@ static int raizn_write(struct raizn_stripe_head *sh)
 			set_bit(dev->idx, dev_bitmap);
 			// If we write the last sector of a stripe unit, add parity
 			if (stripe_id < lba_to_stripe(ctx, chunk_end_lba)) {
-				// [Hangyul[] TODO
 				dev = lba_to_parity_dev(ctx, lba);
 				bio = check_alloc_dev_bio(
 					sh, dev,

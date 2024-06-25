@@ -151,10 +151,15 @@ struct raizn_dev {
 struct raizn_buf_dev {
 	struct dm_dev *dev;
 
-	// Start sector of md general of buffer
+	// Address of superblock in sector
+	sector_t start_sb;
+	sector_t end_sb;
+	
+	// Address of metadata header in sector
 	sector_t start_md;
 	sector_t end_md;
-	// Start sector of partial parity log of buffer
+
+	// Address of partial parity log in sector
 	sector_t start_ppl;
 	sector_t end_ppl;
 
