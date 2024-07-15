@@ -939,7 +939,7 @@ static int raizn_zone_mgr_execute(struct raizn_stripe_head *sh)
 static void raizn_degraded_read_reconstruct(struct raizn_stripe_head *sh)
 {
 	// DEBUG
-	pr_info("raizn_degraded_read_reconstruct\n");
+	//pr_info("raizn_degraded_read_reconstruct\n");
 	struct raizn_ctx *ctx = sh->ctx;
 	sector_t start_lba = sh->orig_bio->bi_iter.bi_sector;
 	sector_t cur_lba = start_lba;
@@ -1451,6 +1451,7 @@ static void raizn_gc(struct work_struct *work)
 			}
 		} else */
 		if (sh->op == RAIZN_OP_REBUILD_INGEST) {
+			pr_info("RAIZN REBUILD INGEST\n");
 			int next_zone;
 			raizn_rebuild_prepare(ctx, dev);
 			if ((next_zone = raizn_rebuild_next(ctx)) >= 0) {
@@ -1601,7 +1602,14 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 	else if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
 		sector_t sec = ppl_buf_start_sector(ctx, buf_dev->end_ppl);
 		buf_dev->start_ppl = sec < buf_dev->end_md ? buf_dev->end_md : sec;
+		buf_dev->end_ppl = buf_dev->start_ppl + ((len + PAGE_SIZE) >> SECTOR_SHIFT);
+
 		mdbio->bi_iter.bi_sector = buf_dev->start_ppl;
+		
+		mdio->header.header.start = buf_dev->start_ppl;
+		mdio->header.header.end = buf_dev->end_ppl;
+
+		//pr_info("1: start = %llu, end = %llu\n", buf_dev->start_ppl, buf_dev->end_ppl);
 	}
 	p = is_vmalloc_addr(&mdio->header) ? vmalloc_to_page(&mdio->header) :
 							virt_to_page(&mdio->header);
@@ -1619,12 +1627,12 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 			return NULL;
 		}
 	}
+	/*
 	if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
 		buf_dev->end_ppl = bio_end_sector(mdbio);
-
-		// DEBUG
-		pr_info("start_ppl %llu, end_ppl %llu\n", buf_dev->start_ppl, buf_dev->end_ppl);
+		pr_info("2: bio_end_sector = %llu\n", bio_end_sector(mdbio));
 	}
+	*/
 	return mdio;
 }
 
@@ -2011,8 +2019,6 @@ static int raizn_read(struct raizn_stripe_head *sh)
 	if (bitmap_empty(ctx->dev_status, RAIZN_MAX_DEVS)) {
 		return raizn_read_simple(sh);
 	} else {
-		// DEBUG
-		pr_info("raizn_read else\n");
 		int failed_dev_idx =
 			find_first_bit(ctx->dev_status, RAIZN_MAX_DEVS);
 		raizn_stripe_head_hold_completion(sh);
@@ -2105,6 +2111,8 @@ static int raizn_read(struct raizn_stripe_head *sh)
 						failed_dev_su_end_lba -
 						stripe_data_end_lba;
 				}
+				pr_err("start_lba %llu, stripe_lba %llu\n", start_lba, stripe_lba);
+				pr_err("missing_start %llu, missing_end %llu\n", missing_su_start_offset, missing_su_end_offset);
 				// Make sure each stripe unit in this stripe is read from missing_su_start_offset to missing_su_end_offset
 				for (int su_idx = 0;
 				     su_idx < ctx->params->stripe_width;
