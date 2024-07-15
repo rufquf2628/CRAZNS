@@ -1,0 +1,41 @@
+job1: (g=0): rw=write, bs=(R) 64.0KiB-64.0KiB, (W) 64.0KiB-64.0KiB, (T) 64.0KiB-64.0KiB, ioengine=psync, iodepth=1
+...
+fio-3.28
+Starting 13 processes
+
+job1: (groupid=0, jobs=13): err= 0: pid=48816: Sat Jun 29 15:15:17 2024
+  write: IOPS=28.8k, BW=1798MiB/s (1886MB/s)(1094GiB/622806msec); 0 zone resets
+    clat (usec): min=65, max=16154, avg=440.72, stdev=126.63
+     lat (usec): min=67, max=16156, avg=444.62, stdev=127.35
+    clat percentiles (usec):
+     |  1.00th=[  241],  5.00th=[  302], 10.00th=[  318], 20.00th=[  343],
+     | 30.00th=[  363], 40.00th=[  388], 50.00th=[  433], 60.00th=[  465],
+     | 70.00th=[  486], 80.00th=[  519], 90.00th=[  578], 95.00th=[  619],
+     | 99.00th=[  988], 99.50th=[ 1090], 99.90th=[ 1172], 99.95th=[ 1221],
+     | 99.99th=[ 1680]
+   bw (  MiB/s): min= 1223, max= 3927, per=100.00%, avg=1816.23, stdev=26.87, samples=16019
+   iops        : min=19572, max=62837, avg=29059.31, stdev=429.96, samples=16019
+  lat (usec)   : 100=0.18%, 250=0.96%, 500=74.63%, 750=22.34%, 1000=0.92%
+  lat (msec)   : 2=0.97%, 4=0.01%, 10=0.01%, 20=0.01%
+  cpu          : usr=2.32%, sys=4.17%, ctx=17921497, majf=5, minf=469
+  IO depths    : 1=100.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwts: total=0,17921280,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=1
+
+Run status group 0 (all jobs):
+  WRITE: bw=1798MiB/s (1886MB/s), 1798MiB/s-1798MiB/s (1886MB/s-1886MB/s), io=1094GiB (1174GB), run=622806-622806msec
+
+Disk stats (read/write):
+    dm-0: ios=48/17919310, merge=0/0, ticks=4/7564624, in_queue=7564628, util=100.00%, aggrios=11/3584235, aggrmerge=0/0, aggrticks=0/152287, aggrin_queue=152288, aggrutil=100.00%
+  nvme0n1: ios=0/2688151, merge=0/0, ticks=0/117217, in_queue=117216, util=100.00%
+  nvme3n1: ios=0/2688151, merge=0/0, ticks=0/117008, in_queue=117008, util=100.00%
+  nvme1n2: ios=26/4480320, merge=0/0, ticks=2/189062, in_queue=189064, util=100.00%
+  nvme4n2: ios=12/4480320, merge=0/0, ticks=2/183434, in_queue=183435, util=100.00%
+  nvme2n1: ios=0/2688151, merge=0/0, ticks=0/117169, in_queue=117169, util=100.00%
+  nvme0n2: ios=36/4480320, merge=0/0, ticks=2/188414, in_queue=188416, util=100.00%
+  nvme3n2: ios=18/4480320, merge=0/0, ticks=1/187556, in_queue=187557, util=100.00%
+  nvme1n1: ios=0/2688151, merge=0/0, ticks=0/117174, in_queue=117174, util=100.00%
+  nvme4n1: ios=0/2688151, merge=0/0, ticks=0/116604, in_queue=116604, util=100.00%
+  nvme2n2: ios=20/4480320, merge=0/0, ticks=2/189238, in_queue=189239, util=100.00%
