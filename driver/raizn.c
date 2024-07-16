@@ -564,7 +564,7 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		// [Hangyul] Buf dev init
 		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
 		buf_dev->idx = dev_idx;
-		buf_dev->start_sb = 0;
+		buf_dev->lba_sb = 0;
 	}
 	return ret;
 }
@@ -607,8 +607,6 @@ static int raizn_init_volume(struct raizn_ctx *ctx)
 	// [Hangyul] TODO
 	//ctx->params->num_zones -= RAIZN_RESERVED_ZONES;
 	ctx->params->buf_nr_sectors = bdev_nr_sectors(ctx->buf_devs[0].dev->bdev);
-	// DEBUG
-	pr_info("bdev nr sectors = %llu\n", ctx->params->buf_nr_sectors);
 	return 0;
 }
 
@@ -764,8 +762,6 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			ti->error = "dm-raizn: Buffer device lookup failed";
 			goto err;
 		}
-		// DEBUG
-		pr_info("bd_nr_sectors = %llu\n", bdev_nr_sectors(ctx->buf_devs[buf_idx].dev->bdev));
 	}
 	
 
@@ -823,20 +819,12 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			ti->error = "Failed to write superblock";
 			goto err;
 		}
-		bio->bi_iter.bi_sector = buf_dev->start_sb;
-		buf_dev->end_sb = bio_end_sector(bio);
+		bio->bi_iter.bi_sector = buf_dev->lba_sb;
 		
-		buf_dev->start_md = buf_dev->end_sb;
-		buf_dev->end_md = buf_dev->start_md + (PAGE_SIZE / SECTOR_SIZE);
+		buf_dev->lba_reset_log = bio_end_sector(bio);
 
-		// DEBUG
-		pr_info("start_md %llu, end_md %llu\n", buf_dev->start_md, buf_dev->end_md);
+		buf_dev->lba_ppl = buf_dev->lba_reset_log + (sizeof(struct raizn_md_header) / SECTOR_SIZE);
 
-		buf_dev->start_ppl = buf_dev->end_md;
-		buf_dev->end_ppl = buf_dev->start_ppl;
-
-		// DEBUG
-		pr_info("start_ppl = %llu\n", buf_dev->start_ppl);
 		if (submit_bio_wait(bio)) {
 			ti->error = "IO error when writting superblock to buffer dev";
 			ret = -1;
@@ -1597,19 +1585,13 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 
 	// Right?
 	if (mdtype == RAIZN_ZONE_MD_GENERAL) {
-		mdbio->bi_iter.bi_sector = buf_dev->start_md;
+		mdbio->bi_iter.bi_sector = buf_dev->lba_reset_log;
 	}
 	else if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
-		sector_t sec = ppl_buf_start_sector(ctx, buf_dev->end_ppl);
-		buf_dev->start_ppl = sec < buf_dev->end_md ? buf_dev->end_md : sec;
-		buf_dev->end_ppl = buf_dev->start_ppl + ((len + PAGE_SIZE) >> SECTOR_SHIFT);
-
-		mdbio->bi_iter.bi_sector = buf_dev->start_ppl;
+		mdbio->bi_iter.bi_sector = buf_dev->lba_ppl;
 		
-		mdio->header.header.start = buf_dev->start_ppl;
-		mdio->header.header.end = buf_dev->end_ppl;
-
-		//pr_info("1: start = %llu, end = %llu\n", buf_dev->start_ppl, buf_dev->end_ppl);
+		//mdio->header.header.start = buf_dev->lba_ppl;
+		//mdio->header.header.end = buf_dev->lba_ppl + ((len + PAGE_SIZE) >> SECTOR_SHIFT);
 	}
 	p = is_vmalloc_addr(&mdio->header) ? vmalloc_to_page(&mdio->header) :
 							virt_to_page(&mdio->header);
@@ -1627,12 +1609,6 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 			return NULL;
 		}
 	}
-	/*
-	if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
-		buf_dev->end_ppl = bio_end_sector(mdbio);
-		pr_info("2: bio_end_sector = %llu\n", bio_end_sector(mdbio));
-	}
-	*/
 	return mdio;
 }
 
@@ -2303,7 +2279,6 @@ static int raizn_zone_reset_top(struct raizn_stripe_head *sh)
 		lba_to_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
 	struct raizn_dev *parity_dev =
 		lba_to_parity_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
-	
 	// [Hangyul]
 	struct raizn_buf_dev *bdev =
 		lba_to_parity_buf_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
@@ -2317,6 +2292,7 @@ static int raizn_zone_reset_top(struct raizn_stripe_head *sh)
 		raizn_alloc_md_buf(sh, zoneno, bdev, dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);
 	struct raizn_sub_io *pdevlog =
 		raizn_alloc_md_buf(sh, zoneno, bdev, parity_dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);
+
 	/*
 	struct raizn_sub_io *devlog =
 		raizn_alloc_md(sh, zoneno, dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);

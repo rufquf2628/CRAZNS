@@ -152,16 +152,13 @@ struct raizn_buf_dev {
 	struct dm_dev *dev;
 
 	// Address of superblock in sector
-	sector_t start_sb;
-	sector_t end_sb;
+	sector_t lba_sb;
 	
 	// Address of metadata header in sector
-	sector_t start_md;
-	sector_t end_md;
+	sector_t lba_reset_log;
 
 	// Address of partial parity log in sector
-	sector_t start_ppl;
-	sector_t end_ppl;
+	sector_t lba_ppl;
 
 	int idx;
 };
