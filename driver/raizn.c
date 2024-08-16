@@ -426,8 +426,8 @@ static void raizn_stripe_head_hold_completion(struct raizn_stripe_head *sh)
 {
 	atomic_inc(&sh->refcount);
 	// [Hangyul] 
-	sh->sentinel.bio = bio_alloc_bioset(NULL, 0, 0, GFP_NOIO, &sh->ctx->bioset);
-	//sh->sentinel.bio = bio_alloc_bioset(NULL, 0, *(&sh->orig_bio->bi_opf), GFP_NOIO, &sh->ctx->bioset);
+	//sh->sentinel.bio = bio_alloc_bioset(NULL, 0, 0, GFP_NOIO, &sh->ctx->bioset);
+	sh->sentinel.bio = bio_alloc_bioset(GFP_NOIO, 0, &sh->ctx->bioset);
 	sh->sentinel.bio->bi_end_io = raizn_endio;
 	sh->sentinel.bio->bi_private = &sh->sentinel;
 }
@@ -476,7 +476,8 @@ raizn_stripe_head_alloc_bio(struct raizn_stripe_head *sh,
 	struct raizn_sub_io *subio =
 		raizn_stripe_head_alloc_subio(sh, sub_io_type);
 	// [Hangyul]
-	subio->bio = bio_alloc_bioset(NULL, bvecs, 0, GFP_NOIO, bioset);
+	//subio->bio = bio_alloc_bioset(NULL, bvecs, 0, GFP_NOIO, bioset);
+	subio->bio = bio_alloc_bioset(GFP_NOIO, bvecs, bioset);
 	subio->bio->bi_end_io = raizn_endio;
 	subio->bio->bi_private = subio;
 	return subio;
@@ -503,7 +504,8 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
 		// [Hangyul] Porting
-		dev->num_zones = bdev_nr_zones(dev->dev->bdev);
+		//dev->num_zones = bdev_nr_zones(dev->dev->bdev);
+		dev->num_zones = blkdev_nr_zones(dev->dev->bdev->bd_disk);
 		dev->zones = kcalloc(dev->num_zones, sizeof(struct raizn_zone),
 				     GFP_NOIO);
 		if (!dev->zones) {
@@ -811,7 +813,8 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
 		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
 		
-		struct bio *bio = bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &dev->bioset);
+		//struct bio *bio = bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &dev->bioset);
+		struct bio *bio = bio_alloc_bioset(GFP_NOIO, 1, &dev->bioset);
 		bio_set_op_attrs(bio, REQ_OP_WRITE, REQ_FUA);
 		bio_set_dev(bio, buf_dev->dev->bdev);
 		
@@ -960,15 +963,16 @@ static void raizn_degraded_read_reconstruct(struct raizn_stripe_head *sh)
 			sector_t start_offset = cur_lba - start_lba;
 			sector_t len = cur_su_end_lba - cur_lba;
 			// [Hangyul]
-			struct bio *split,
-					   *clone = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
 			//struct bio *split,
-			//	*clone = bio_clone_fast(sh->orig_bio, GFP_NOIO,
-			//				&ctx->bioset);
+			//		   *clone = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
+			struct bio *split,
+				*clone = bio_clone_fast(sh->orig_bio, GFP_NOIO,
+							&ctx->bioset);
 
 			// [Hangyul]
 			struct bio *temp =
-				bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &ctx->bioset);
+				bio_alloc_bioset(GFP_NOIO, 1, &ctx->bioset);
+			//	bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &ctx->bioset);
 			void *stripe_units[RAIZN_MAX_DEVS];
 			struct raizn_sub_io *subio = sh->sub_ios[0];
 			int xor_buf_idx = 0;
@@ -1087,9 +1091,9 @@ static int buffer_stripe_data(struct raizn_stripe_head *sh, sector_t start,
 	void *pos =
 		buf->data + (lba_to_stripe_offset(ctx, start) << SECTOR_SHIFT);
 	// [Hangyul]
-	struct bio *clone = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
-	//struct bio *clone =
-	//	bio_clone_fast(sh->orig_bio, GFP_NOIO, &ctx->bioset);
+	//struct bio *clone = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
+	struct bio *clone =
+		bio_clone_fast(sh->orig_bio, GFP_NOIO, &ctx->bioset);
 	if (start - sh->orig_bio->bi_iter.bi_sector > 0) {
 		bio_advance(clone, (start - sh->orig_bio->bi_iter.bi_sector)
 					   << SECTOR_SHIFT);
@@ -1717,6 +1721,7 @@ static struct bio *check_alloc_dev_bio(struct raizn_stripe_head *sh,
 			lba_to_pba_default(sh->ctx, lba);
 		bio_set_dev(subio->bio, dev->dev->bdev);
 		subio->zone = &dev->zones[lba_to_lzone(sh->ctx, lba)];
+		//pr_err("wp: %llu, sector: %llu\n", subio->zone->wp, subio->bio->bi_iter.bi_sector);
 	}
 	return sh->bios[dev->idx];
 }
@@ -1819,9 +1824,9 @@ static int raizn_write(struct raizn_stripe_head *sh)
 	    leading_substripe_sectors + trailing_substripe_sectors) {
 		if (leading_substripe_sectors) {
 			// [Hangyul]
-			bio = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
-			//bio = bio_clone_fast(sh->orig_bio, GFP_NOIO,
-			//		     &ctx->bioset);
+			//bio = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
+			bio = bio_clone_fast(sh->orig_bio, GFP_NOIO,
+					     &ctx->bioset);
 			BUG_ON(!bio);
 			bio_advance(bio,
 				    leading_substripe_sectors << SECTOR_SHIFT);
@@ -1928,10 +1933,18 @@ submit:
 		struct raizn_sub_io *subio = sh->sub_ios[subio_idx];
 		struct raizn_zone *zone = subio->zone;
 		if (subio->sub_io_type == RAIZN_SUBIO_DATA) {
+			/*if (subio->zone->wp < subio->bio->bi_iter.bi_sector) {
+				pr_err("wp: %llu, sector: %llu\n", subio->zone->wp, subio->bio->bi_iter.bi_sector);
+				raizn_stripe_head_release_completion(sh);
+				return DM_MAPIO_KILL;
+			}*/
+			
 			while (subio->zone->wp <
 				       subio->bio->bi_iter.bi_sector) {
+				pr_err("wp: %llu, sector: %llu\n", subio->zone->wp, subio->bio->bi_iter.bi_sector);
 				udelay(2);
 			}
+			
 			submit_bio_noacct(subio->bio);
 			zone->wp += bio_sectors(subio->bio);
 		}
@@ -1958,10 +1971,10 @@ static inline int raizn_read_simple(struct raizn_stripe_head *sh)
 {
 	struct raizn_ctx *ctx = sh->ctx;
 	// [Hangyul]
-	struct bio *split,
-			   *clone = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
 	//struct bio *split,
-	//	*clone = bio_clone_fast(sh->orig_bio, GFP_NOIO, &ctx->bioset);
+	//		   *clone = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
+	struct bio *split,
+		*clone = bio_clone_fast(sh->orig_bio, GFP_NOIO, &ctx->bioset);
 	atomic_set(&sh->refcount, 1);
 	clone->bi_private = &sh->sentinel;
 	clone->bi_end_io = raizn_endio;
@@ -2022,11 +2035,11 @@ static int raizn_read(struct raizn_stripe_head *sh)
 					start_su_idx); // Cover edge case where only 1 stripe unit is involved in the IO
 			bool stripe_degraded = false;
 			// [Hangyul]
-			struct bio *stripe_bio,
-					   *temp = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
 			//struct bio *stripe_bio,
-			//	*temp = bio_clone_fast(sh->orig_bio, GFP_NOIO,
-			//			       &ctx->bioset);
+			//		   *temp = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &ctx->bioset);
+			struct bio *stripe_bio,
+				*temp = bio_clone_fast(sh->orig_bio, GFP_NOIO,
+						       &ctx->bioset);
 			BUG_ON(!temp);
 			if (temp->bi_iter.bi_sector < stripe_lba) {
 				bio_advance(temp,
@@ -2087,8 +2100,8 @@ static int raizn_read(struct raizn_stripe_head *sh)
 						failed_dev_su_end_lba -
 						stripe_data_end_lba;
 				}
-				pr_err("start_lba %llu, stripe_lba %llu\n", start_lba, stripe_lba);
-				pr_err("missing_start %llu, missing_end %llu\n", missing_su_start_offset, missing_su_end_offset);
+				//pr_err("start_lba %llu, stripe_lba %llu\n", start_lba, stripe_lba);
+				//pr_err("missing_start %llu, missing_end %llu\n", missing_su_start_offset, missing_su_end_offset);
 				// Make sure each stripe unit in this stripe is read from missing_su_start_offset to missing_su_end_offset
 				for (int su_idx = 0;
 				     su_idx < ctx->params->stripe_width;
@@ -2211,9 +2224,9 @@ static int raizn_flush(struct raizn_stripe_head *sh)
 	for (dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
 		// [Hangyul]
-		struct bio *clone = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &dev->bioset);
-		//struct bio *clone =
-		//	bio_clone_fast(sh->orig_bio, GFP_NOIO, &dev->bioset);
+		//struct bio *clone = bio_alloc_clone(NULL, sh->orig_bio, GFP_NOIO, &dev->bioset);
+		struct bio *clone =
+			bio_clone_fast(sh->orig_bio, GFP_NOIO, &dev->bioset);
 		clone->bi_iter.bi_sector = lba_to_pba_default(
 			ctx, sh->orig_bio->bi_iter.bi_sector);
 		clone->bi_iter.bi_size =
