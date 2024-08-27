@@ -1,0 +1,777 @@
+Linux 5.15.77 (shean-ESC4000-E11) 	08/27/2024 	_x86_64_	(64 CPU)
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array             0.09         0.03         5.91         0.00       3132     538112          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26084.00         0.00   1669376.00         0.00          0    1669376          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25898.00         0.00   1657472.00         0.00          0    1657472          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25709.00         0.00   1645376.00         0.00          0    1645376          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26215.00         0.00   1677760.00         0.00          0    1677760          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26470.00         0.00   1694080.00         0.00          0    1694080          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27701.00         0.00   1772864.00         0.00          0    1772864          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26842.00         0.00   1717888.00         0.00          0    1717888          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         29412.00         0.00   1882368.00         0.00          0    1882368          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         31057.00         0.00   1987648.00         0.00          0    1987648          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         32095.00         0.00   2054080.00         0.00          0    2054080          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25325.00         0.00   1620800.00         0.00          0    1620800          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26102.00         0.00   1670528.00         0.00          0    1670528          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25316.00         0.00   1620224.00         0.00          0    1620224          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25503.00         0.00   1632192.00         0.00          0    1632192          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26148.00         0.00   1673472.00         0.00          0    1673472          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25599.00         0.00   1638336.00         0.00          0    1638336          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27950.00         0.00   1788800.00         0.00          0    1788800          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         29588.00         0.00   1893632.00         0.00          0    1893632          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24606.00         0.00   1574784.00         0.00          0    1574784          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         28004.00         0.00   1792256.00         0.00          0    1792256          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25645.00         0.00   1641280.00         0.00          0    1641280          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25267.00         0.00   1617088.00         0.00          0    1617088          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27769.00         0.00   1777216.00         0.00          0    1777216          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25405.00         0.00   1625920.00         0.00          0    1625920          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26052.00         0.00   1667328.00         0.00          0    1667328          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25681.00         0.00   1643584.00         0.00          0    1643584          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26146.00         0.00   1673344.00         0.00          0    1673344          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24466.00         0.00   1565824.00         0.00          0    1565824          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24773.00         0.00   1585472.00         0.00          0    1585472          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25437.00         0.00   1627968.00         0.00          0    1627968          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26313.00         0.00   1684032.00         0.00          0    1684032          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27206.00         0.00   1741184.00         0.00          0    1741184          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26266.00         0.00   1681024.00         0.00          0    1681024          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26145.00         0.00   1673280.00         0.00          0    1673280          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26783.00         0.00   1714112.00         0.00          0    1714112          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27779.00         0.00   1777856.00         0.00          0    1777856          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27412.00         0.00   1754368.00         0.00          0    1754368          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27211.00         0.00   1741504.00         0.00          0    1741504          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26087.00         0.00   1669568.00         0.00          0    1669568          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26095.00         0.00   1670080.00         0.00          0    1670080          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26428.00         0.00   1691392.00         0.00          0    1691392          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25916.00         0.00   1658624.00         0.00          0    1658624          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26585.00         0.00   1701440.00         0.00          0    1701440          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25553.00         0.00   1635392.00         0.00          0    1635392          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25478.00         0.00   1630592.00         0.00          0    1630592          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25482.00         0.00   1630848.00         0.00          0    1630848          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24895.00         0.00   1593280.00         0.00          0    1593280          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22953.00         0.00   1468992.00         0.00          0    1468992          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22898.00         0.00   1465472.00         0.00          0    1465472          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22739.00         0.00   1455296.00         0.00          0    1455296          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26617.00         0.00   1703488.00         0.00          0    1703488          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23054.00         0.00   1475456.00         0.00          0    1475456          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23091.00         0.00   1477824.00         0.00          0    1477824          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25958.00         0.00   1661312.00         0.00          0    1661312          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25496.00         0.00   1631744.00         0.00          0    1631744          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26146.00         0.00   1673344.00         0.00          0    1673344          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26008.00         0.00   1664512.00         0.00          0    1664512          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25845.00         0.00   1654080.00         0.00          0    1654080          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26101.00         0.00   1670464.00         0.00          0    1670464          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26344.00         0.00   1686016.00         0.00          0    1686016          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26271.00         0.00   1681344.00         0.00          0    1681344          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25833.00         0.00   1653312.00         0.00          0    1653312          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25802.00         0.00   1651328.00         0.00          0    1651328          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24981.00         0.00   1598784.00         0.00          0    1598784          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23268.00         0.00   1489152.00         0.00          0    1489152          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25014.00         0.00   1600896.00         0.00          0    1600896          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24256.00         0.00   1552384.00         0.00          0    1552384          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         21999.00         0.00   1407936.00         0.00          0    1407936          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22861.00         0.00   1463104.00         0.00          0    1463104          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24149.00         0.00   1545536.00         0.00          0    1545536          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24707.00         0.00   1581248.00         0.00          0    1581248          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24679.00         0.00   1579456.00         0.00          0    1579456          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23981.00         0.00   1534784.00         0.00          0    1534784          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24495.00         0.00   1567680.00         0.00          0    1567680          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24657.00         0.00   1578048.00         0.00          0    1578048          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24390.00         0.00   1560960.00         0.00          0    1560960          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24080.00         0.00   1541120.00         0.00          0    1541120          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23168.00         0.00   1482752.00         0.00          0    1482752          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23323.00         0.00   1492672.00         0.00          0    1492672          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23520.00         0.00   1505280.00         0.00          0    1505280          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27038.00         0.00   1730432.00         0.00          0    1730432          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24827.00         0.00   1588928.00         0.00          0    1588928          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24810.00         0.00   1587840.00         0.00          0    1587840          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26087.00         0.00   1669568.00         0.00          0    1669568          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25033.00         0.00   1602112.00         0.00          0    1602112          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26112.00         0.00   1671168.00         0.00          0    1671168          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25849.00         0.00   1654336.00         0.00          0    1654336          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24804.00         0.00   1587456.00         0.00          0    1587456          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25106.00         0.00   1606784.00         0.00          0    1606784          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25968.00         0.00   1661952.00         0.00          0    1661952          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25220.00         0.00   1614080.00         0.00          0    1614080          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         29371.00         0.00   1879744.00         0.00          0    1879744          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23198.00         0.00   1484672.00         0.00          0    1484672          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24510.00         0.00   1568640.00         0.00          0    1568640          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26407.00         0.00   1690048.00         0.00          0    1690048          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26116.00         0.00   1671424.00         0.00          0    1671424          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27282.00         0.00   1746048.00         0.00          0    1746048          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26392.00         0.00   1689088.00         0.00          0    1689088          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         27409.00         0.00   1754176.00         0.00          0    1754176          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26415.00         0.00   1690560.00         0.00          0    1690560          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25584.00         0.00   1637376.00         0.00          0    1637376          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25541.00         0.00   1634624.00         0.00          0    1634624          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24565.00         0.00   1572160.00         0.00          0    1572160          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25468.00         0.00   1629952.00         0.00          0    1629952          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25393.00         0.00   1625152.00         0.00          0    1625152          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24506.00         0.00   1568384.00         0.00          0    1568384          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25271.00         0.00   1617344.00         0.00          0    1617344          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24754.00         0.00   1584256.00         0.00          0    1584256          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25768.00         0.00   1649152.00         0.00          0    1649152          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25718.00         0.00   1645952.00         0.00          0    1645952          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26304.00         0.00   1683456.00         0.00          0    1683456          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26313.00         0.00   1684032.00         0.00          0    1684032          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25135.00         0.00   1608640.00         0.00          0    1608640          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23997.00         0.00   1535808.00         0.00          0    1535808          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25613.00         0.00   1639232.00         0.00          0    1639232          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25393.00         0.00   1625152.00         0.00          0    1625152          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23361.00         0.00   1495104.00         0.00          0    1495104          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25635.00         0.00   1640640.00         0.00          0    1640640          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26157.00         0.00   1674048.00         0.00          0    1674048          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23304.00         0.00   1491456.00         0.00          0    1491456          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22874.00         0.00   1463936.00         0.00          0    1463936          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22938.00         0.00   1468032.00         0.00          0    1468032          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22638.00         0.00   1448832.00         0.00          0    1448832          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25977.00         0.00   1662528.00         0.00          0    1662528          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25499.00         0.00   1631936.00         0.00          0    1631936          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24237.00         0.00   1551168.00         0.00          0    1551168          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23090.00         0.00   1477760.00         0.00          0    1477760          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22830.00         0.00   1461120.00         0.00          0    1461120          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23664.00         0.00   1514496.00         0.00          0    1514496          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24761.00         0.00   1584704.00         0.00          0    1584704          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24691.00         0.00   1580224.00         0.00          0    1580224          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24678.00         0.00   1579392.00         0.00          0    1579392          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25743.00         0.00   1647552.00         0.00          0    1647552          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25109.00         0.00   1606976.00         0.00          0    1606976          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         28029.00         0.00   1793856.00         0.00          0    1793856          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24592.00         0.00   1573888.00         0.00          0    1573888          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24250.00         0.00   1552000.00         0.00          0    1552000          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24018.00         0.00   1537152.00         0.00          0    1537152          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25143.00         0.00   1609152.00         0.00          0    1609152          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25659.00         0.00   1642176.00         0.00          0    1642176          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25659.00         0.00   1642176.00         0.00          0    1642176          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26197.00         0.00   1676608.00         0.00          0    1676608          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24865.00         0.00   1591360.00         0.00          0    1591360          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26025.00         0.00   1665600.00         0.00          0    1665600          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23345.00         0.00   1494080.00         0.00          0    1494080          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22637.00         0.00   1448768.00         0.00          0    1448768          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25834.00         0.00   1653376.00         0.00          0    1653376          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24761.00         0.00   1584704.00         0.00          0    1584704          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24624.00         0.00   1575936.00         0.00          0    1575936          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25411.00         0.00   1626304.00         0.00          0    1626304          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25723.00         0.00   1646272.00         0.00          0    1646272          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26159.00         0.00   1674176.00         0.00          0    1674176          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23097.00         0.00   1478208.00         0.00          0    1478208          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22864.00         0.00   1463296.00         0.00          0    1463296          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22839.00         0.00   1461696.00         0.00          0    1461696          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22838.00         0.00   1461632.00         0.00          0    1461632          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22820.00         0.00   1460480.00         0.00          0    1460480          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23564.00         0.00   1508096.00         0.00          0    1508096          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25503.00         0.00   1632192.00         0.00          0    1632192          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24630.00         0.00   1576320.00         0.00          0    1576320          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23544.00         0.00   1506816.00         0.00          0    1506816          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25145.00         0.00   1609280.00         0.00          0    1609280          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25755.00         0.00   1648320.00         0.00          0    1648320          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26207.00         0.00   1677248.00         0.00          0    1677248          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24978.00         0.00   1598592.00         0.00          0    1598592          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24420.00         0.00   1562880.00         0.00          0    1562880          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25427.00         0.00   1627328.00         0.00          0    1627328          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24081.00         0.00   1541184.00         0.00          0    1541184          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25669.00         0.00   1642816.00         0.00          0    1642816          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25878.00         0.00   1656192.00         0.00          0    1656192          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         26421.00         0.00   1690944.00         0.00          0    1690944          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25925.00         0.00   1659200.00         0.00          0    1659200          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24731.00         0.00   1582784.00         0.00          0    1582784          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24524.75         0.00   1569584.16         0.00          0    1585280          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24793.00         0.00   1586752.00         0.00          0    1586752          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25649.00         0.00   1641536.00         0.00          0    1641536          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23325.00         0.00   1492800.00         0.00          0    1492800          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22585.00         0.00   1445440.00         0.00          0    1445440          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         22587.00         0.00   1445568.00         0.00          0    1445568          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23072.00         0.00   1476608.00         0.00          0    1476608          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25424.00         0.00   1627136.00         0.00          0    1627136          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24972.00         0.00   1598208.00         0.00          0    1598208          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24725.00         0.00   1582400.00         0.00          0    1582400          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24063.00         0.00   1540032.00         0.00          0    1540032          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         23945.00         0.00   1532480.00         0.00          0    1532480          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24248.00         0.00   1551872.00         0.00          0    1551872          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25906.00         0.00   1657984.00         0.00          0    1657984          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24618.00         0.00   1575552.00         0.00          0    1575552          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         24330.00         0.00   1557120.00         0.00          0    1557120          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         25356.00      1044.00   1619712.00         0.00       1044    1619712          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array         14418.00         0.00    922752.00         0.00          0     922752          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array          3549.00      1044.00    224064.00         0.00       1044     224064          0
+
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+array             0.00         0.00         0.00         0.00          0          0          0
+
