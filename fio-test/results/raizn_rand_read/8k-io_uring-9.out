@@ -1,0 +1,37 @@
+job1: (g=0): rw=randread, bs=(R) 8192B-8192B, (W) 8192B-8192B, (T) 8192B-8192B, ioengine=io_uring, iodepth=256
+fio-3.28
+Starting 1 process
+
+job1: (groupid=0, jobs=1): err= 0: pid=253185: Thu Sep  5 19:18:24 2024
+  read: IOPS=200k, BW=1561MiB/s (1637MB/s)(160GiB/104961msec)
+    slat (nsec): min=307, max=2309.0k, avg=4153.94, stdev=2746.54
+    clat (usec): min=20, max=7597, avg=1276.32, stdev=200.44
+     lat (usec): min=24, max=7599, avg=1280.53, stdev=201.04
+    clat percentiles (usec):
+     |  1.00th=[  676],  5.00th=[  857], 10.00th=[  988], 20.00th=[ 1172],
+     | 30.00th=[ 1221], 40.00th=[ 1270], 50.00th=[ 1303], 60.00th=[ 1336],
+     | 70.00th=[ 1369], 80.00th=[ 1418], 90.00th=[ 1483], 95.00th=[ 1549],
+     | 99.00th=[ 1696], 99.50th=[ 1762], 99.90th=[ 2008], 99.95th=[ 2147],
+     | 99.99th=[ 2835]
+   bw (  MiB/s): min= 1347, max= 2951, per=100.00%, avg=1562.22, stdev=239.13, samples=209
+   iops        : min=172538, max=377854, avg=199963.62, stdev=30608.65, samples=209
+  lat (usec)   : 50=0.01%, 100=0.01%, 250=0.01%, 500=0.08%, 750=2.44%
+  lat (usec)   : 1000=7.73%
+  lat (msec)   : 2=89.64%, 4=0.11%, 10=0.01%
+  cpu          : usr=18.91%, sys=81.05%, ctx=6870, majf=0, minf=29903
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=0.1%, >=64=100.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.1%
+     issued rwts: total=20971520,0,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=256
+
+Run status group 0 (all jobs):
+   READ: bw=1561MiB/s (1637MB/s), 1561MiB/s-1561MiB/s (1637MB/s-1637MB/s), io=160GiB (172GB), run=104961-104961msec
+
+Disk stats (read/write):
+    dm-0: ios=11027864/0, merge=0/0, ticks=1174628/0, in_queue=1174628, util=100.00%, aggrios=2205688/0, aggrmerge=3/0, aggrticks=254140/0, aggrin_queue=254140, aggrutil=91.74%
+  nvme1n2: ios=2205693/0, merge=3/0, ticks=253668/0, in_queue=253668, util=91.73%
+  nvme4n2: ios=2205674/0, merge=6/0, ticks=252719/0, in_queue=252720, util=91.73%
+  nvme0n2: ios=2205695/0, merge=1/0, ticks=251805/0, in_queue=251805, util=91.74%
+  nvme3n2: ios=2205688/0, merge=4/0, ticks=255225/0, in_queue=255224, util=91.73%
+  nvme2n2: ios=2205694/0, merge=2/0, ticks=257286/0, in_queue=257286, util=91.73%
