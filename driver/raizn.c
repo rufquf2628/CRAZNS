@@ -32,6 +32,11 @@ static struct raizn_sub_io *raizn_alloc_md(struct raizn_stripe_head *sh,
 					   raizn_zone_type mdtype, void *data,
 					   size_t len);
 */
+
+#ifdef PROFILING
+atomic64_t ppl_len;
+#endif
+
 static inline raizn_op_t raizn_op(struct bio *bio)
 {
 	if (bio) {
@@ -237,7 +242,7 @@ static int raizn_workqueue_init(struct raizn_ctx *ctx,
 	return 0;
 }
 
-static void raizn_zone_stripe_buffers_deinit(struct raizn_zone *lzone)
+static void raizn_zone_stripe_buffers_deinit(struct raizn_ctx *ctx, struct raizn_zone *lzone)
 {
 	mutex_lock(&lzone->lock);
 	if (lzone->stripe_buffers) {
@@ -245,12 +250,12 @@ static void raizn_zone_stripe_buffers_deinit(struct raizn_zone *lzone)
 			kvfree(lzone->stripe_buffers[i].data);
 			lzone->stripe_buffers[i].data = NULL;
 		}
+		kfifo_in_spinlocked(&ctx->conv_region_fifo, &lzone->stripe_buffers[0].region, 1, &ctx->conv_wlock);
 		kvfree(lzone->stripe_buffers);
 		lzone->stripe_buffers = NULL;
 	}
 	mutex_unlock(&lzone->lock);
 }
-
 static int raizn_zone_stripe_buffers_init(struct raizn_ctx *ctx,
 					  struct raizn_zone *lzone)
 {
@@ -267,6 +272,13 @@ static int raizn_zone_stripe_buffers_init(struct raizn_ctx *ctx,
 		pr_err("Failed to allocate stripe buffers\n");
 		return -1;
 	}
+
+	struct crazns_conv_region *region;
+	if (!kfifo_out_spinlocked(&ctx->conv_region_fifo, &region, 1, &ctx->conv_rlock)) {
+		pr_err("Failed to read conv region fifo.\n");
+		return -1;
+	}
+
 	for (int i = 0; i < STRIPE_BUFFERS_PER_ZONE; ++i) {
 		struct raizn_stripe_buffer *buf = &lzone->stripe_buffers[i];
 		buf->data =
@@ -275,6 +287,7 @@ static int raizn_zone_stripe_buffers_init(struct raizn_ctx *ctx,
 			pr_err("Failed to allocate stripe buffer data\n");
 			return -1;
 		}
+		buf->region = region;
 		mutex_init(&lzone->stripe_buffers[i].lock);
 	}
 	return 0;
@@ -304,7 +317,7 @@ static void raizn_zone_mgr_deinit(struct raizn_ctx *ctx)
 {
 	for (int zone_idx = 0; zone_idx < ctx->params->num_zones; ++zone_idx) {
 		struct raizn_zone *zone = &ctx->zone_mgr.lzones[zone_idx];
-		raizn_zone_stripe_buffers_deinit(zone);
+		raizn_zone_stripe_buffers_deinit(ctx, zone);
 		kfree(ctx->zone_mgr.lzones[zone_idx].persistence_bitmap);
 	}
 	kfree(ctx->zone_mgr.lzones);
@@ -497,6 +510,18 @@ int init_pzone_descriptor(struct blk_zone *zone, unsigned int idx, void *data)
 	return 0;
 }
 
+static int crazns_init(struct raizn_ctx *ctx) {
+	int ret;
+
+	for (int dev_idx = 0; dev_idx < ctx->params->buf_width; ++dev_idx) {
+		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
+		buf_dev->idx = dev_idx;
+		buf_dev->lba_sb = 0;
+	}
+
+	return ret;
+}
+
 static int raizn_init_devs(struct raizn_ctx *ctx)
 {
 	int ret, zoneno;
@@ -562,11 +587,6 @@ static int raizn_init_devs(struct raizn_ctx *ctx)
 		dev->gc_flush_workers.dev = dev;
 		dev->sb.params = *ctx->params; // Shallow copy is fine
 		dev->sb.idx = dev->idx;
-
-		// [Hangyul] Buf dev init
-		struct raizn_buf_dev *buf_dev = &ctx->buf_devs[dev_idx];
-		buf_dev->idx = dev_idx;
-		buf_dev->lba_sb = 0;
 	}
 	return ret;
 }
@@ -651,6 +671,11 @@ static void deallocate_target(struct dm_target *ti)
 	// deallocate ctx->zone_mgr
 	raizn_zone_mgr_deinit(ctx);
 
+	// deallocate conv_region_fifo
+	if (kfifo_initialized(&ctx->conv_region_fifo)) {
+		kfifo_free(&ctx->conv_region_fifo);
+	}
+
 	kfree(ctx->params);
 
 	raizn_workqueue_deinit(&ctx->io_workers);
@@ -668,7 +693,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	if (argc < NUM_TABLE_PARAMS + MIN_DEVS) {
 		ret = -EINVAL;
 		ti->error =
-			"dm-raizn: Too few arguments <stripe unit (KiB)> <num io workers> <num gc workers> <logical zone capacity in KiB (0 for auto)> [drives]";
+			"dm-raizn: Too few arguments <stripe unit (KiB)> <num io workers> <num gc workers> <logical zone capacity in KiB (0 for auto)> <max open zones> [drives]";
 		goto err;
 	}
 	ctx = kzalloc(sizeof(struct raizn_ctx), GFP_NOIO);
@@ -730,6 +755,12 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	ctx->params->lzone_capacity_sectors =
 		ctx->params->lzone_capacity_sectors >> SECTOR_SHIFT;
 
+	ret = kstrtoint(argv[4], 0, &ctx->params->max_open_zones);
+	if (ret) {
+		ti->error = "dm-raizn: Invalid max open zones";
+		goto err;
+	}
+
 	// Lookup devs and set up logical volume
 	ctx->devs = kcalloc(ctx->params->array_width, sizeof(struct raizn_dev),
 			    GFP_NOIO);
@@ -770,6 +801,8 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	if (raizn_init_devs(ctx) != 0) {
 		goto err;
 	}
+	crazns_init(ctx);	
+
 	bitmap_zero(ctx->dev_status, RAIZN_MAX_DEVS);
 	raizn_init_volume(ctx);
 	raizn_zone_mgr_init(ctx);
@@ -781,33 +814,17 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	raizn_wq = alloc_workqueue(WQ_NAME, WQ_UNBOUND,
 				   ctx->num_io_workers + ctx->num_gc_workers);
 
-	// [Hangyul] TODO
-	/*	
-	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
-		struct raizn_dev *dev = &ctx->devs[dev_idx];
-		struct bio *bio = bio_alloc_bioset(NULL, 1, 0, GFP_NOIO, &dev->bioset);
-		struct raizn_zone *mdzone;
-		bio_set_op_attrs(bio, REQ_OP_WRITE, REQ_FUA);
-		bio_set_dev(bio, dev->dev->bdev);
+	
+	int num_regions = (ctx->params->max_open_zones / ctx->params->buf_width) + 1;
+	
+	spin_lock_init(&ctx->conv_rlock);
+	spin_lock_init(&ctx->conv_wlock);
 
-		if (bio_add_page(bio, virt_to_page(&dev->sb), sizeof(dev->sb),
-				 0) != sizeof(dev->sb)) {
-			ti->error = "Failed to write superblock";
-			ret = -1;
-			goto err;
-		}
-		mdzone = dev->md_zone[RAIZN_ZONE_MD_GENERAL];
-		mdzone->wp += sizeof(dev->sb);
-		bio->bi_iter.bi_sector = mdzone->start;
-		if (submit_bio_wait(bio)) {
-			ti->error = "IO error when writing superblock";
-			ret = -1;
-			goto err;
-		}
-		bio_put(bio);
-		
+	if (ret = kfifo_alloc(&ctx->conv_region_fifo, num_regions * ctx->params->buf_width, GFP_NOIO)) {
+		ti->error = "Conv region fifo allocation error.";
+		goto err;
 	}
-	*/
+	kfifo_reset(&ctx->conv_region_fifo);
 	
 	for (int dev_idx = 0; dev_idx < ctx->params->array_width; ++dev_idx) {
 		struct raizn_dev *dev = &ctx->devs[dev_idx];
@@ -834,8 +851,24 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			goto err;
 		}
 		bio_put(bio);
+
+		for (int conv_idx = 0; conv_idx < num_regions; ++conv_idx) {
+			struct crazns_conv_region* conv = kzalloc(sizeof(struct crazns_conv_region), GFP_NOIO);
+			if (!conv) {
+				ti->error = "Failed to alloc conv region.";
+				ret = -1;
+				goto err;
+			}
+			conv->sector_start = (buf_dev->lba_reset_log + (sizeof(struct raizn_md_header) / SECTOR_SIZE)) + 
+				(conv_idx * (ctx->params->su_sectors + (sizeof(struct raizn_md_header) / SECTOR_SIZE)));
+			
+			if (!kfifo_in_spinlocked(&ctx->conv_region_fifo, &conv, 1, &ctx->conv_wlock)) {
+				ret = -1;
+				goto err;
+			}
+		}
 	}
-	
+
 	return 0;
 
 err:
@@ -887,7 +920,7 @@ static int raizn_zone_mgr_execute(struct raizn_stripe_head *sh)
 				return -1;
 			}
 			if (lzone->wp >= lzone->start + lzone->capacity) {
-				raizn_zone_stripe_buffers_deinit(lzone);
+				raizn_zone_stripe_buffers_deinit(ctx, lzone);
 				atomic_set(&lzone->cond, BLK_ZONE_COND_FULL);
 			}
 		}
@@ -904,7 +937,7 @@ static int raizn_zone_mgr_execute(struct raizn_stripe_head *sh)
 		case BLK_ZONE_COND_EMPTY:
 		case BLK_ZONE_COND_CLOSED:
 		default:
-			raizn_zone_stripe_buffers_deinit(
+			raizn_zone_stripe_buffers_deinit(ctx, 
 				lzone); // checks for null
 			if (sh->status == RAIZN_IO_COMPLETED) {
 				atomic_set(&lzone->cond, BLK_ZONE_COND_EMPTY);
@@ -929,8 +962,6 @@ static int raizn_zone_mgr_execute(struct raizn_stripe_head *sh)
 
 static void raizn_degraded_read_reconstruct(struct raizn_stripe_head *sh)
 {
-	// DEBUG
-	//pr_info("raizn_degraded_read_reconstruct\n");
 	struct raizn_ctx *ctx = sh->ctx;
 	sector_t start_lba = sh->orig_bio->bi_iter.bi_sector;
 	sector_t cur_lba = start_lba;
@@ -1258,6 +1289,7 @@ static void raizn_rebuild_read_next_stripe(struct raizn_stripe_head *sh)
 	ctx->zone_mgr.rebuild_mgr.rp += ctx->params->stripe_sectors;
 	sh->parity_bufs =
 		kzalloc(ctx->params->stripe_sectors << SECTOR_SHIFT, GFP_NOIO);
+
 	if (!sh->parity_bufs) {
 		pr_err("Fatal error: failed to allocate rebuild buffer\n");
 	}
@@ -1592,7 +1624,11 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 		mdbio->bi_iter.bi_sector = buf_dev->lba_reset_log;
 	}
 	else if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
-		mdbio->bi_iter.bi_sector = buf_dev->lba_ppl;
+		struct crazns_conv_region * region = ctx->zone_mgr.lzones[lzoneno].stripe_buffers[0].region;
+
+		mdbio->bi_iter.bi_sector = region->sector_start;
+
+		//mdbio->bi_iter.bi_sector = buf_dev->lba_ppl;
 		
 		//mdio->header.header.start = buf_dev->lba_ppl;
 		//mdio->header.header.end = buf_dev->lba_ppl + ((len + PAGE_SIZE) >> SECTOR_SHIFT);
@@ -1612,6 +1648,9 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 			bio_endio(mdbio);
 			return NULL;
 		}
+#ifdef PROFILING
+		atomic64_add(len, &ppl_len);
+#endif
 	}
 	return mdio;
 }
@@ -1749,11 +1788,6 @@ static int raizn_write(struct raizn_stripe_head *sh)
 		(bio_sectors(sh->orig_bio) - leading_substripe_sectors) %
 		ctx->params->stripe_sectors;
 	// Maximum number of parity to write. This could be better, as it currently ignores cases where a subset of the final parity is known
-
-	// DEBUG
-	//pr_info("start %llu, leading_end %llu, leading_substripe %llu, trailing_substripe %llu\n", start_lba,
-	//		leading_stripe_end_lba, leading_substripe_sectors, trailing_substripe_sectors);
-
 	int parity_su = (bio_sectors(sh->orig_bio) - leading_substripe_sectors -
 			 trailing_substripe_sectors) /
 				ctx->params->stripe_sectors +
@@ -1941,7 +1975,7 @@ submit:
 			
 			while (subio->zone->wp <
 				       subio->bio->bi_iter.bi_sector) {
-				pr_err("wp: %llu, sector: %llu\n", subio->zone->wp, subio->bio->bi_iter.bi_sector);
+				//pr_err("wp: %llu, sector: %llu\n", subio->zone->wp, subio->bio->bi_iter.bi_sector);
 				udelay(2);
 			}
 			
@@ -2437,6 +2471,7 @@ static void raizn_status(struct dm_target *ti, status_type_t type,
 	pr_info("preflush = %d\n", atomic_read(&ctx->counters.preflush));
 	pr_info("fua = %d\n", atomic_read(&ctx->counters.fua));
 	pr_info("gc_count = %d\n", atomic_read(&ctx->counters.gc_count));
+	pr_info("ppl length = %lld\n", atomic64_read(&ppl_len));
 #endif
 }
 

@@ -40,7 +40,7 @@
 #define WQ_NAME "RAIZN_WQ"
 #define SCACHE_NAME "raizn-stripe-cache"
 // ctx params
-#define NUM_TABLE_PARAMS (4)
+#define NUM_TABLE_PARAMS (5)
 #define MIN_DEVS 			 (3)
 #define RAIZN_RESERVED_ZONES (5)
 #define NUM_PARITY_DEV	 (1)
@@ -75,6 +75,8 @@ struct raizn_params {
 	/* [Hangyul] Number of buffer drives */
 	int buf_width;
 	sector_t buf_nr_sectors;
+	/* Max number of open zones */
+	int max_open_zones;
 };
 
 // Per-device superblock
@@ -105,6 +107,13 @@ struct raizn_stripe_buffer {
 	char *data;
 	sector_t lba;
 	struct mutex lock;
+
+	struct crazns_conv_region *region;
+};
+
+struct crazns_conv_region {
+	sector_t sector_start;
+	sector_t sector_end;
 };
 
 // Reuse same struct for logical, physical, and metadata zone descriptors
@@ -205,6 +214,9 @@ struct raizn_ctx {
 	struct bio_set bioset; // For cloning/splitting bios that are never submitted
 	struct raizn_workqueue io_workers;
 	int num_io_workers, num_gc_workers;
+
+	spinlock_t conv_rlock, conv_wlock;
+	DECLARE_KFIFO_PTR(conv_region_fifo, struct crazns_conv_region *);
 
 #ifdef PROFILING
 	struct {
