@@ -249,8 +249,8 @@ static void raizn_zone_stripe_buffers_deinit(struct raizn_ctx *ctx, struct raizn
 		for (int i = 0; i < STRIPE_BUFFERS_PER_ZONE; ++i) {
 			kvfree(lzone->stripe_buffers[i].data);
 			lzone->stripe_buffers[i].data = NULL;
+			kfifo_in_spinlocked(&ctx->conv_region_fifo, &lzone->stripe_buffers[i].region, 1, &ctx->conv_wlock);
 		}
-		kfifo_in_spinlocked(&ctx->conv_region_fifo, &lzone->stripe_buffers[0].region, 1, &ctx->conv_wlock);
 		kvfree(lzone->stripe_buffers);
 		lzone->stripe_buffers = NULL;
 	}
@@ -272,19 +272,24 @@ static int raizn_zone_stripe_buffers_init(struct raizn_ctx *ctx,
 		pr_err("Failed to allocate stripe buffers\n");
 		return -1;
 	}
-
+	/*
 	struct crazns_conv_region *region;
 	if (!kfifo_out_spinlocked(&ctx->conv_region_fifo, &region, 1, &ctx->conv_rlock)) {
 		pr_err("Failed to read conv region fifo.\n");
 		return -1;
 	}
-
+	*/
 	for (int i = 0; i < STRIPE_BUFFERS_PER_ZONE; ++i) {
 		struct raizn_stripe_buffer *buf = &lzone->stripe_buffers[i];
 		buf->data =
 			vzalloc(ctx->params->stripe_sectors << SECTOR_SHIFT);
 		if (!buf->data) {
 			pr_err("Failed to allocate stripe buffer data\n");
+			return -1;
+		}
+		struct crazns_conv_region *region;
+		if (!kfifo_out_spinlocked(&ctx->conv_region_fifo, &region, 1, &ctx->conv_rlock)) {
+			pr_err("Failed to read conv region fifo.\n");
 			return -1;
 		}
 		buf->region = region;
@@ -815,8 +820,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 				   ctx->num_io_workers + ctx->num_gc_workers);
 
 	
-	int num_regions = (ctx->params->max_open_zones / ctx->params->buf_width) + 1;
-	
+	int num_regions = ((ctx->params->max_open_zones * STRIPE_BUFFERS_PER_ZONE) / ctx->params->buf_width) + 1;
 	spin_lock_init(&ctx->conv_rlock);
 	spin_lock_init(&ctx->conv_wlock);
 
@@ -861,7 +865,7 @@ int raizn_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 			}
 			conv->sector_start = (buf_dev->lba_reset_log + (sizeof(struct raizn_md_header) / SECTOR_SIZE)) + 
 				(conv_idx * (ctx->params->su_sectors + (sizeof(struct raizn_md_header) / SECTOR_SIZE)));
-			
+		
 			if (!kfifo_in_spinlocked(&ctx->conv_region_fifo, &conv, 1, &ctx->conv_wlock)) {
 				ret = -1;
 				goto err;
@@ -1624,7 +1628,7 @@ static struct raizn_sub_io *raizn_alloc_md_buf(struct raizn_stripe_head *sh,
 		mdbio->bi_iter.bi_sector = buf_dev->lba_reset_log;
 	}
 	else if (mdtype == RAIZN_ZONE_MD_PARITY_LOG) {
-		struct crazns_conv_region * region = ctx->zone_mgr.lzones[lzoneno].stripe_buffers[0].region;
+		struct crazns_conv_region * region = ctx->zone_mgr.lzones[lzoneno].stripe_buffers[lba_to_stripe(ctx, sh->orig_bio->bi_iter.bi_sector) & STRIPE_BUFFERS_MASK].region;
 
 		mdbio->bi_iter.bi_sector = region->sector_start;
 
