@@ -155,6 +155,15 @@ static struct raizn_buf_dev *lba_to_parity_buf_dev(struct raizn_ctx *ctx, sector
 	return &ctx->buf_devs[lba_to_parity_dev_idx(ctx, lba)];
 }
 
+static struct raizn_buf_dev *lba_to_buf_dev(struct raizn_ctx *ctx, sector_t lba)
+{
+	sector_t su_position = lba_to_su(ctx, lba) % ctx->params->stripe_width;
+	if (su_position >= lba_to_parity_dev_idx(ctx, lba)) {
+		su_position += 1;
+	}
+	return &ctx->buf_devs[su_position];
+}
+
 // Which device holds the data chunk associated with LBA
 static struct raizn_dev *lba_to_dev(struct raizn_ctx *ctx, sector_t lba)
 {
@@ -2325,6 +2334,7 @@ static int raizn_zone_reset_bottom(struct raizn_stripe_head *sh)
 
 static int raizn_zone_reset_top(struct raizn_stripe_head *sh)
 {
+	//pr_info("reset top\n");
 	struct raizn_ctx *ctx = sh->ctx;
 	struct raizn_dev *dev =
 		lba_to_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
@@ -2332,7 +2342,12 @@ static int raizn_zone_reset_top(struct raizn_stripe_head *sh)
 		lba_to_parity_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
 	// [Hangyul]
 	struct raizn_buf_dev *bdev =
+		lba_to_buf_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
+	struct raizn_buf_dev *pbdev =
 		lba_to_parity_buf_dev(ctx, sh->orig_bio->bi_iter.bi_sector);
+
+	//pr_info("bdev: %d\n", bdev->idx);
+	//pr_info("pbdev: %d\n", pbdev->idx);
 
 	int zoneno = lba_to_lzone(ctx, sh->orig_bio->bi_iter.bi_sector);
 	struct raizn_stripe_head *log_sh =
@@ -2342,7 +2357,7 @@ static int raizn_zone_reset_top(struct raizn_stripe_head *sh)
 	struct raizn_sub_io *devlog =
 		raizn_alloc_md_buf(sh, zoneno, bdev, dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);
 	struct raizn_sub_io *pdevlog =
-		raizn_alloc_md_buf(sh, zoneno, bdev, parity_dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);
+		raizn_alloc_md_buf(sh, zoneno, pbdev, parity_dev, RAIZN_ZONE_MD_GENERAL, NULL, 0);
 
 	/*
 	struct raizn_sub_io *devlog =
