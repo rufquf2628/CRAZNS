@@ -1,0 +1,7 @@
+job1: (g=0): rw=read, bs=(R) 32.0KiB-32.0KiB, (W) 32.0KiB-32.0KiB, (T) 32.0KiB-32.0KiB, ioengine=psync, iodepth=1
+...
+fio-3.28
+Starting 8 processes
+
+
+Run status group 0 (all jobs):
