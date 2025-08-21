@@ -1,7 +1,0 @@
-job1: (g=0): rw=read, bs=(R) 8192B-8192B, (W) 8192B-8192B, (T) 8192B-8192B, ioengine=psync, iodepth=1
-...
-fio-3.28
-Starting 8 processes
-
-
-Run status group 0 (all jobs):
